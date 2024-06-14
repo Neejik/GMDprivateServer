@@ -6,6 +6,7 @@ require_once "../lib/GJPCheck.php";
 $GJPCheck = new GJPCheck();
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
+require_once "../../config/antiRaidConfig.php";
 $mainLib = new mainLib();
 //here im getting all the data
 $levelDesc = ExploitPatch::remove($_POST["levelDesc"]);
@@ -32,6 +33,7 @@ if (strpos($rawDesc, '<c') !== false) {
 		$levelDesc = str_replace('/', '_', $levelDesc);
 	}
 }
+$levelDesc = base64_encode(mb_substr(base64_decode($levelDesc),0,$comment_bytes_limit,'UTF-8')."...");
 $query = $db->prepare("UPDATE levels SET levelDesc=:levelDesc WHERE levelID=:levelID AND extID=:extID");
 $query->execute([':levelID' => $levelID, ':extID' => $id, ':levelDesc' => $levelDesc]);
 echo 1;

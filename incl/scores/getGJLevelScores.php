@@ -1,4 +1,5 @@
 <?php
+//error_reporting(0);
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
@@ -29,7 +30,7 @@ if($query2->rowCount() == 0) {
 	$query = $db->prepare("INSERT INTO levelscores (accountID, levelID, percent, uploadDate, coins, attempts, clicks, time, progresses, dailyID)
 	VALUES (:accountID, :levelID, :percent, :uploadDate, :coins, :attempts, :clicks, :time, :progresses, :dailyID)");
 } else {
-	if($oldPercent < $percent) {
+	if($oldPercent < $percent){
 		$query = $db->prepare("UPDATE levelscores SET percent=:percent, uploadDate=:uploadDate, coins=:coins, attempts=:attempts, clicks=:clicks, time=:time, progresses=:progresses, dailyID=:dailyID WHERE accountID=:accountID AND levelID=:levelID AND dailyID $condition 0");
 	} else {
 		$query = $db->prepare("SELECT count(*) FROM levelscores WHERE percent=:percent AND uploadDate=:uploadDate AND accountID=:accountID AND levelID=:levelID AND coins = :coins AND attempts = :attempts AND clicks = :clicks AND time = :time AND progresses = :progresses AND dailyID = :dailyID");
@@ -37,7 +38,7 @@ if($query2->rowCount() == 0) {
 }
 
 $query->execute([':accountID' => $accountID, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate, ':coins' => $coins, ':attempts' => $attempts, ':clicks' => $clicks, ':time' => $time, ':progresses' => $progresses, ':dailyID' => $dailyID]);
-if($percent > 100 || $percent < 0) {
+if($percent > 100 || $percent < 0){
 	$query = $db->prepare("UPDATE users SET isBanned=1 WHERE extID = :accountID");
 	$query->execute([':accountID' => $accountID]);
 }
@@ -65,21 +66,18 @@ switch($type) {
 		break;
 }
 
-
-
 $query2->execute($query2args);
 $result = $query2->fetchAll();
 foreach ($result as &$score) {
 	$extID = $score["accountID"];
-	$query2 = $db->prepare("SELECT userName, userID, icon, color1, color2, color3, iconType, special, extID, isBanned, clan FROM users WHERE extID = :extID");
+	$query2 = $db->prepare("SELECT userName, userID, icon, color1, color2, color3, iconType, special, extID, isBanned FROM users WHERE extID = :extID");
 	$query2->execute([':extID' => $extID]);
 	$user = $query2->fetch();
-	$time = $gs->makeTime($score["uploadDate"]);
+	$time = $gs->makeDate($score["uploadDate"])."\n(".$gs->makeTime($score["uploadDate"])." ago)";
 	if($user["isBanned"] == 0){
 		if($score["percent"] == 100) $place = 1;
 		else if($score["percent"] > 75) $place = 2;
 		else $place = 3;
-		$user["userName"] = $gs->makeClanUsername($user);
 		echo "1:".$user["userName"].":2:".$user["userID"].":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":51:".$user["color3"].":14:".$user["iconType"].":15:".$user["special"].":16:".$user["extID"].":3:".$score["percent"].":6:".$place.":13:".$score["coins"].":42:".$time."|";
 	}
 }

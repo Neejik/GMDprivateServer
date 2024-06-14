@@ -82,8 +82,9 @@ if(!is_numeric($levelID)){
 														(:levelID,INET6_ATON(:ip))");
 			$query6->execute([':levelID' => $levelID, ':ip' => $ip]);
 		}
-		$uploadDate = $gs->makeTime($result["uploadDate"]);
-		$updateDate = $gs->makeTime($result["updateDate"]);
+		//getting the days since uploaded... or outputting the date in Y-M-D format at least for now...
+		$uploadDate = $gs->makeDate($result["uploadDate"])." (".$gs->makeTime($result["uploadDate"])." ago)";
+		$updateDate = $gs->makeDate($result["updateDate"])." (".$gs->makeTime($result["updateDate"])." ago)";
 		//password xor
 		$pass = $result["password"];
 		$desc = $result["levelDesc"];

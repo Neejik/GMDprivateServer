@@ -8,6 +8,8 @@ require_once "../lib/mainLib.php";
 $mainLib = new mainLib();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
+require_once "../../config/antiRaidConfig.php";
+require_once "../lib/TimeoutCheck.php";
 //here im getting all the data
 $gjp2check = isset($_POST['gjp2']) ? $_POST['gjp2'] : $_POST['gjp'];
 $gjp = ExploitPatch::remove($gjp2check);
@@ -37,6 +39,8 @@ if (strpos($rawDesc, '<c') !== false) {
 		$levelDesc = str_replace('/', '_', $levelDesc);
 	}
 }
+$levelDesc = base64_encode(mb_substr(base64_decode($levelDesc),0,$comment_bytes_limit,'UTF-8'));
+
 $levelVersion = ExploitPatch::remove($_POST["levelVersion"]);
 $levelLength = ExploitPatch::remove($_POST["levelLength"]);
 $audioTrack = ExploitPatch::remove($_POST["audioTrack"]);
@@ -80,10 +84,6 @@ $id = $gs->getIDFromPost();
 $hostname = $gs->getIP();
 $userID = $mainLib->getUserID($id, $userName);
 $uploadDate = time();
-$checking = $db->prepare("SELECT isUploadBanned FROM users WHERE userID = :id");
-$checking->execute([':id' => $userID]);
-$checking = $checking->fetchColumn();
-if($checking > 0) exit("-1");
 $query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate > :time AND (userID = :userID OR hostname = :ip)");
 $query->execute([':time' => $uploadDate - 60, ':userID' => $userID, ':ip' => $hostname]);
 if($query->fetchColumn() > 0){
@@ -94,17 +94,12 @@ VALUES (:levelName, :gameVersion, :binaryVersion, :userName, :levelDesc, :levelV
 
 
 if($levelString != "" AND $levelName != ""){
+    TimeoutCheck::CheckTimeout(-700);
 	$querye=$db->prepare("SELECT levelID FROM levels WHERE levelName = :levelName AND userID = :userID");
 	$querye->execute([':levelName' => $levelName, ':userID' => $userID]);
 	$levelID = $querye->fetchColumn();
 	$lvls = $querye->rowCount();
 	if($lvls==1){
-		include "../../config/misc.php";
-		$query = $db->prepare("SELECT starStars FROM `levels` WHERE levelID = :levelID");
-		$query->execute([":levelID"=> $levelID]);
-		$stars = $query->fetchColumn();
-		if(!$ratedLevelsUpdates && !in_array($levelID, $ratedLevelsUpdatesExceptions) && $stars > 0) exit("-1");
-		
 		$query = $db->prepare("UPDATE levels SET levelName=:levelName, gameVersion=:gameVersion,  binaryVersion=:binaryVersion, userName=:userName, levelDesc=:levelDesc, levelVersion=:levelVersion, levelLength=:levelLength, audioTrack=:audioTrack, auto=:auto, password=:password, original=:original, twoPlayer=:twoPlayer, songID=:songID, objects=:objects, coins=:coins, requestedStars=:requestedStars, extraString=:extraString, levelString=:levelString, levelInfo=:levelInfo, secret=:secret, updateDate=:uploadDate, unlisted=:unlisted, hostname=:hostname, isLDM=:ldm, wt=:wt, wt2=:wt2, unlisted2=:unlisted2, settingsString=:settingsString, songIDs=:songIDs, sfxIDs=:sfxIDs, ts=:ts WHERE levelName=:levelName AND extID=:id");	
 		$query->execute([':levelName' => $levelName, ':gameVersion' => $gameVersion, ':binaryVersion' => $binaryVersion, ':userName' => $userName, ':levelDesc' => $levelDesc, ':levelVersion' => $levelVersion, ':levelLength' => $levelLength, ':audioTrack' => $audioTrack, ':auto' => $auto, ':password' => $password, ':original' => $original, ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':objects' => $objects, ':coins' => $coins, ':requestedStars' => $requestedStars, ':extraString' => $extraString, ':levelString' => "", ':levelInfo' => $levelInfo, ':secret' => $secret, ':levelName' => $levelName, ':id' => $id, ':uploadDate' => $uploadDate, ':unlisted' => $unlisted, ':hostname' => $hostname, ':ldm' => $ldm, ':wt' => $wt, ':wt2' => $wt2, ':unlisted2' => $unlisted2, ':settingsString' => $settingsString, ':songIDs' => $songIDs, ':sfxIDs' => $sfxIDs, ':ts' => $ts]);
 		file_put_contents("../../data/levels/$levelID",$levelString);

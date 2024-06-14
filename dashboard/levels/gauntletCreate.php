@@ -12,7 +12,7 @@ include "../".$dbPath."config/security.php";
 $dl->title($dl->getLocalizedString("gauntletCreateTitle"));
 $dl->printFooter('../');
 $allGauntlets = '';
-if($gs->checkPermission($_SESSION["accountID"], "dashboardGauntletCreate")) {
+if($gs->checkPermission($_SESSION["accountID"], "dashboardLevelPackCreate")) {
 	if(isset($_POST['level_1'], $_POST['level_2'], $_POST['level_3'], $_POST['level_4'], $_POST['level_5'], $_POST['gauntlet_id'])) {
 			if(!Captcha::validateCaptcha()) {
 				$dl->printSong('<div class="form">
@@ -79,7 +79,7 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardGauntletCreate")) {
 		$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("gauntletCreateTitle").'</h1>
 		<form class="form__inner" method="post" action="">
-			<p>'.sprintf($dl->getLocalizedString("gauntletCreateSuccessNew"), $gs->getGauntletName($gauntletID).' Gauntlet').'</p>
+			<p>'.sprintf($dl->getLocalizedString("gauntletCreateSuccessNew"), $gs->getGauntletName($gauntletID).' Chapter').'</p>
 			<button type="button" onclick="a(\'levels/gauntletCreate.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("gauntletCreateOneMore").'</button>
 		</form>
 	</div>', 'mod');
@@ -103,7 +103,7 @@ if($gs->checkPermission($_SESSION["accountID"], "dashboardGauntletCreate")) {
 		$gauntletArray = [];
 		foreach($query AS &$key) $gauntletArray[] = $key['ID'];
 		for($x = 1; $x <= $gs->getGauntletCount(); $x++) {
-			if(!in_array($x, $gauntletArray)) $gauntletOptions .= '<option id="gauntlet_id_option'.$x.'" value="'.$x.'">'.$gs->getGauntletName($x).' Gauntlet</option>';
+			if(!in_array($x, $gauntletArray)) $gauntletOptions .= '<option id="gauntlet_id_option'.$x.'" value="'.$x.'">'.$gs->getGauntletName($x).' Chapter</option>';
 		}
 		$dl->printSong('<div class="form-control itemsbox">
 		<div class="itemoverflow"><div class="itemslist">

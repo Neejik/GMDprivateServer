@@ -53,7 +53,7 @@ class GJPCheck {
 
 		if(!empty($_POST['gjp'])) self::validateGJPOrDie($_POST['gjp'], $accountID);
 		elseif(!empty($_POST['gjp2'])) self::validateGJP2OrDie($_POST['gjp2'], $accountID);
-		else exit("-1");
+		else exit("-1"); //Fixed
 
 		return $accountID;
 	}

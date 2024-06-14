@@ -3,23 +3,56 @@ global $dbPath;
 include __DIR__."/../../".$dbPath."config/dashboard.php";
 // main
 $string["homeNavbar"] = "Inicio";
-$string["welcome"] = "¡Bienvenido al panel de ".$gdps.'!';
+$string["welcome"] = "¡Bienvenido a la dashboard de ".$gdps.'!';
 $string["didntInstall"] = "<div style='color:#47a0ff'><b>¡Cuidado, no has terminado de instalar el panel!</b> Haz clic en el texto para hacerlo.</div>";
 $string["levelsWeek"] = "Niveles subidos en una semana"; // unused string
 $string["levels3Months"] = "Niveles subidos en 3 meses"; // unused string
-$string["footer"] = $gdps.", ".date('Y', time());
+$string["footer"] = "✨〃Unnamed GDPS, 2021 - ".date('Y', time())."</br>⚙ GDPSCore v2.0.0-beta";
 $string["tipsAfterInstalling"] = "¡Bienvenido al panel! Aquí tienes unos consejos tras la instalación:<br>
 1. Parece que aparecieron nuevos permisos 'SQL' en la tabla 'roles'. Ve a comprobarlo...<br>
 2. Coloca un archivo 'icon.png' en la carpeta 'dashboard' para que aparezca el logo de tu GDPS en la esquina superior izquierda.<br>
 3. Configura el panel en 'config/dashboard.php'";
-$string["wwygdt"] = "¿Qué vas a hacer hoy?";
+
+$msg[0] = "¿Qué vas a hacer hoy?";
+$msg[1] = "TOME SEÑORA TOME";
+$msg[2] = "Hola Nintendero, hola Nintender- AAA";
+$msg[3] = "(1/3) NAAAmix, algún día podríamos casarnos";
+$msg[4] = "(2/3) No, nokierow";
+$msg[5] = "(3/3) TOMA, PA KE LLORI CON GANA'";
+$msg[6] = "R.I.P. GDGravity";
+$msg[7] = "¿El pollo ardiente?";
+$msg[8] = "Perdí los mensajes originales por un error de respaldo :c";
+$msg[9] = ":michifino:";
+$msg[10] = "¿Primera vez?";
+$msg[11] = "Gracias a LeMaple por la idea";
+$msg[12] = "Asi que la 0.2.0 finalmente salió";
+$msg[13] = "Nejik.✦ aprueba esto 👍";
+$msg[14] = "<div style='color:#47ff47'>Parece un buen lugar para esconder un easter egg...</div>";
+$msg[15] = "Esto es un texto de ejemplo";
+$msg[16] = "¡Bienvenido a la dashboard de Unnamed GDPS!";
+$msg[17] = "¿Ya te saludé?";
+$msg[18] = "Estaba haciendo esto cuando salió la 2.201";
+$msg[19] = "Dejenlo cocinar";
+$msg[20] = "Que tu padre es el <div style='color:#000000'><b>negrojose</b></div>";
+$msg[21] = "<div style='color:#ff4747'><b>¡NO USES LA DASHBOARD A LAS 3AM! (termina 🔥)</b></div>";
+$msg[22] = "<div style='font-size:12px'>ola soi tímido</div>";
+$msg[23] = "Ten un buen día ^^";
+$msg[24] = "Quierosentirtucuerpojuntitoalmioporquemialmayatienetiemposintiendofrío";
+$msg[25] = "Feliz 2024 :D";
+$msg[26] = "Al final de día, es de noche.";
+$msg[27] = "¡Edición Stellar!";
+$msg[28] = "¡Es una página!";
+$msg[29] = "Conexión exitosa";
+$msg[30] = "0.3.0 próximamente... 🕵️‍";
+
+$string["wwygdt"] = $msg[rand(0, 30)];
 $string["game"] = "Juego";
 $string["guest"] = "invitado";
 $string["account"] = "Cuenta";
 $string["levelsOptDesc"] = "Ver lista de niveles";
 $string["songsOptDesc"] = "Ver lista de canciones";
-$string["yourClanOptDesc"] = "Ver clan \"%s\"";
-$string["clanOptDesc"] = "Ver lista de clanes";
+$string["yourClanOptDesc"] = "Ver team \"%s\"";
+$string["clanOptDesc"] = "Ver lista de teams";
 $string["yourProfile"] = "Tu perfil";
 $string["profileOptDesc"] = "Ver tu perfil";
 $string["messengerOptDesc"] ="Ver tus mensajes";
@@ -60,7 +93,7 @@ $string["changeUsername"] = "Cambiar nombre de usuario";
 $string["unlistedLevels"] = "Tus niveles ocultos";
 // manage
 $string["manageSongs"] = "Administrar canciones";
-$string["gauntletManage"] = "Administrar Gauntlets";
+$string["gauntletManage"] = "Administrar Story Mode";
 $string["suggestLevels"] = "Niveles enviados";
 // mod tools
 $string["modTools"] = "Herramientas";
@@ -70,15 +103,15 @@ $string["unlistedMod"] = "Niveles ocultos";
 $string["reuploadSection"] = "Servidor";
 $string["songAdd"] = "Subir canción";
 $string["songLink"] = "Subir canción mediante enlace";
-$string["packManage"] = "Administrar Map Packs";
+$string["packManage"] = "Administrar Map Zones";
 // browse
 $string["browse"] = "Buscar";
 $string["statsSection"] = "Estadísticas";
-$string["dailyTable"] = "Niveles diarios";
-$string["modActionsList"] = "Acciones de los moderadores";
+$string["dailyTable"] = "Daily's";
+$string["modActionsList"] = "Acciones de los mods";
 $string["modActions"] = "Moderadores";
-$string["gauntletTable"] = "Gauntlets";
-$string["packTable"] = "Map Packs";
+$string["gauntletTable"] = "Story Mode";
+$string["packTable"] = "Map Zones";
 $string["leaderboardTime"] = "Top de 24h";
 // download
 $string["download"] = "Descargar";
@@ -145,9 +178,9 @@ $string["oldNick"] = "Nombre actual";
 $string["newNick"] = "Nuevo nombre";
 $string["password"] = "Contraseña";
 // map packs
-$string["packCreate"] = "Agregar Map Pack";
+$string["packCreate"] = "Agregar";
 $string["packCreateTitle"] = "Crear Map Pack";
-$string["packCreateDesc"] = "Crea un Map Pack con recompensas";
+$string["packCreateDesc"] = "Crea un nuevo Map Pack";
 $string["packCreateSuccess"] = "Has creado un Map Pack llamado";
 $string["packCreateOneMore"] = "Crear otro Map Pack";
 $string["packName"] = "Nombre del Map Pack";
@@ -155,11 +188,11 @@ $string["color"] = "Color";
 $string["sameLevels"] = "Has escogido los mismos niveles";
 $string["show"] = "Mostrar";
 $string["packChange"] = "Editar Map Pack";
-$string["createNewPack"] = "Crea un nuevo Map Pack";
+$string["createNewPack"] = "Crear un nuevo Map Pack";
 // gauntlets
-$string["gauntletCreate"] = "Agregar Gauntlet";
+$string["gauntletCreate"] = "Agregar";
 $string["gauntletCreateTitle"] = "Crear Gauntlet";
-$string["gauntletCreateDesc"] = "Crea un Gauntlet con temática específica";
+$string["gauntletCreateDesc"] = "Crea un nuevo Gauntlet";
 $string["gauntletCreateSuccess"] = "Has creado un Gauntlet exitosamente";
 $string["gauntletCreateOneMore"] = "Crear otro Gauntlet";
 $string["chooseLevels"] = "¡Elige los niveles!";
@@ -170,7 +203,7 @@ $string["level3"] = "3er nivel";
 $string["level4"] = "4to nivel";
 $string["level5"] = "5to nivel";
 $string["gauntletChange"] = "Editar Gauntlet";
-$string["createNewGauntlet"] = "Crea un nuevo Gauntlet";
+$string["createNewGauntlet"] = "Crear un nuevo Gauntlet";
 $string["gauntletCreateSuccessNew"] = 'Has creado el <b>%1$s</b> exitosamente';
 $string["gauntletSelectAutomatic"] = "Seleccionar automáticamente";
 // quests
@@ -185,7 +218,7 @@ $string["invalidPost"] = "¡Datos incorrectos!";
 $string["fewMoreQuests"] = "Se recomienda crear más misiones";
 $string["oneMoreQuest?"] = "Crear otra misión";
 $string["changeQuest"] = "Editar misión";
-$string["createNewQuest"] = "Crea una nueva misión";
+$string["createNewQuest"] = "Crear una nueva misión";
 // reupload
 $string["levelReupload"] = "Resubir nivel";
 $string["levelReuploadDesc"] = "Resube un nivel de otro servidor";
@@ -312,7 +345,7 @@ $string["howMuchLiked"] = "¿A cuántos les ha gustado?"; // unused string
 $string["nooneLiked"] = "A nadie le ha gustado"; // unused string
 // clans
 $string["clan"] = "Clan";
-$string["joinedAt"] = "Fecha de unión: <b>%s</b>";
+$string["joinedAt"] = "Fecha de ingreso: <b>%s</b>";
 $string["createdAt"] = "Fecha de creación: <b>%s</b>";
 $string["clanMembers"] = "Miembros del clan";
 $string["noMembers"] = "Sin miembros";
@@ -480,12 +513,12 @@ $string["stats"] = "Estadísticas";
 $string["suggestFeatured"] = "¿Featured?";
 $string["whoAdded"] = "¿Quién lo otorgó?";
 //modActionsList
-$string["banDesc"] = "Banea (o desbanea) un usuario del top";
+$string["banDesc"] = "Banea (o desbanea) un jugador del top";
 $string["playerTop"] = 'Top de jugadores';
 $string["creatorTop"] = 'Top de creadores';
-$string["levelUploading"] = 'Subir niveles';
-$string["successfullyBanned"] = 'El usuario <b>%1$s</b> con la ID de cuenta <b>%2$s</b> ha sido baneado exitosamente';
-$string["successfullyUnbanned"] = 'El usuario <b>%1$s</b> con la ID de cuenta <b>%2$s</b> ha sido desbaneado exitosamente';
+$string["levelUploading"] = 'Subida de niveles';
+$string["successfullyBanned"] = 'El jugador <b>%1$s</b> con la ID de cuenta <b>%2$s</b> ha sido baneado exitosamente';
+$string["successfullyUnbanned"] = 'El jugador <b>%1$s</b> con la ID de cuenta <b>%2$s</b> ha sido desbaneado exitosamente';
 $string["commentBan"] = 'Comentar';
 // mod badges
 $string["admin"] = "Administrador";

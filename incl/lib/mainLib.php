@@ -24,7 +24,6 @@ class mainLib {
 			"Deadlocked by F-777",
 			"Fingerbang by MDK",
 			"Dash by MDK",
-			"Explorers by Hinkik",
 			"The Seven Seas by F-777",
 			"Viking Arena by F-777",
 			"Airborne Robots by F-777",
@@ -38,39 +37,18 @@ class mainLib {
 			"Striker by Waterflame",
 			"Embers by Dex Arson",
 			"Round 1 by Dex Arson",
-			"Monster Dance Off by F-777",
- 		        "Press Start by MDK",
-   		        "Nock Em by Bossfight",
-  		        "Power Trip by Boom Kitty"];
+			"Monster Dance Off by F-777"];
 		if($id < 0 || $id >= count($songs))
 			return "Unknown by DJVI";
 		return $songs[$id];
 	}
-	public function getDifficulty($diff, $auto, $demon, $demonDiff = 1) {
-		if($auto != 0) return "Auto";
-		if($demon != 0) {
-			switch($demonDiff) {
-				case 0:
-					return 'Hard Demon';
-					break;
-				case 3:
-					return 'Easy Demon';
-					break;
-				case 4:
-					return 'Medium Demon';
-					break;
-				case 5:
-					return 'Insane Demon';
-					break;
-				case 6:
-					return 'Extreme Demon';
-					break;
-				default:
-					return 'Demon';
-					break;
-			}
-		} else {
-			switch($diff) {
+	public function getDifficulty($diff,$auto,$demon) {
+		if($auto != 0){
+			return "Auto";
+		}else if($demon != 0){
+			return "Demon";
+		}else{
+			switch($diff){
 				case 0:
 					return "N/A";
 					break;
@@ -246,7 +224,7 @@ class mainLib {
 		return array($starDifficulty, $starDemon, $starAuto);
 	}
 	public function getGauntletName($id, $wholeArray = false){
-		$gauntlets = ["Unknown", "Fire", "Ice", "Poison", "Shadow", "Lava", "Bonus", "Chaos", "Demon", "Time", "Crystal", "Magic", "Spike", "Monster", "Doom", "Death", 'Forest', 'Rune', 'Force', 'Spooky', 'Dragon', 'Water', 'Haunted', 'Acid', 'Witch', 'Power', 'Potion', 'Snake', 'Toxic', 'Halloween', 'Treasure', 'Ghost', 'Spider', 'Gem', 'Inferno', 'Portal', 'Strange', 'Fantasy', 'Christmas', 'Surprise', 'Mystery', 'Cursed', 'Cyborg', 'Castle', 'Grave', 'Temple', 'World', 'Galaxy', 'Universe', 'Discord', 'Split', 'NCS I', 'NCS II'];
+		$gauntlets = ["Unknown", "1st", "2nd", "3rd", "Shadow", "Lava", "Bonus", "Chaos", "Demon", "Time", "Crystal", "Magic", "Spike", "Monster", "Doom", "Death", 'Forest', 'Rune', 'Force', 'Spooky', 'Dragon', 'Water', 'Haunted', 'Acid', 'Witch', 'Power', 'Potion', 'Snake', 'Toxic', 'Halloween', 'Treasure', 'Ghost', 'Spider', 'Gem', 'Inferno', 'Portal', 'Strange', 'Fantasy', 'Christmas', 'Surprise', 'Mystery', 'Cursed', 'Cyborg', 'Castle', 'Grave', 'Temple', 'World', 'Galaxy', 'Universe', 'Discord', 'Split'];
 		if($wholeArray) return $gauntlets;
 		if($id < 0 || $id >= count($gauntlets))
 			return $gauntlets[0];
@@ -255,40 +233,118 @@ class mainLib {
 	public function getGauntletCount() {
 		return count($this->getGauntletName(0, true))-1;
 	}
-	public function makeTime($time) {
-		include __DIR__ . "/../../config/dashboard.php";
-		if(!isset($timeType)) $timeType = 0;
-		switch($timeType) {
-			case 1:
-				if(date("d.m.Y", $time) == date("d.m.Y", time())) return date("G;i", $time);
-				elseif(date("Y", $time) == date("Y", time())) return date("d.m", $time);
-				else return date("d.m.Y", $time);
-				break;
-			case 2:
-				// taken from https://stackoverflow.com/a/36297417
-				$time = time() - $time;
-				$time = ($time < 1) ? 1 : $time;
-				$tokens = array (31536000 => 'year', 2592000 => 'month', 604800 => 'week', 86400 => 'day', 3600 => 'hour', 60 => 'minute', 1 => 'second');
-				foreach($tokens as $unit => $text) {
-					if($time < $unit) continue;
-					$numberOfUnits = floor($time / $unit);
-					return $numberOfUnits . ' ' . $text . (($numberOfUnits > 1) ? 's' : '');
+	/*function makeTime($delta)
+	{
+		if ($delta < 31536000)
+		{
+			if ($delta < 2628000)
+			{
+				if ($delta < 604800)
+				{
+					if ($delta < 86400)
+					{
+						if ($delta < 3600)
+						{
+							if ($delta < 60)
+							{
+								return $delta." second".($delta == 1 ? "" : "s");
+							}
+							else
+							{
+                        					$rounded = floor($delta / 60);
+								return $rounded." minute".($rounded == 1 ? "" : "s");
+							}
+						}
+						else
+						{
+							$rounded = floor($delta / 3600);
+							return $rounded." hour".($rounded == 1 ? "" : "s");
+						}
+					}
+					else
+					{
+						$rounded = floor($delta / 86400);
+						return $rounded." day".($rounded == 1 ? "" : "s");
+					}
 				}
-				break;
-			default:
-				return date("d/m/Y G.i", $time);
-				break;
+				else
+				{
+					$rounded = floor($delta / 604800);
+					return $rounded." week".($rounded == 1 ? "" : "s");
+				}
+			}
+			else
+			{
+				$rounded = floor($delta / 2628000); 
+				return $rounded." month".($rounded == 1 ? "" : "s");
+			}
+		}
+		else
+		{
+			$rounded = floor($delta / 31536000);
+			return $rounded." year".($rounded == 1 ? "" : "s");
+		}
+	}*/
+	public function makeDate($inclContext) {
+	    if(file_exists($result["uploadDate"])) $inclContext = $result["uploadDate"];
+	    elseif(file_exists($result["updateDate"])) $inclContext = $result["updateDate"];
+	    elseif(file_exists($comment1["timestamp"])) $inclContext = $comment1["timestamp"];
+	    elseif(file_exists($result["timestamp"])) $inclContext = $result["timestamp"];
+	    elseif(file_exists($message1["timestamp"])) $inclContext = $message1["timestamp"];
+	    elseif(file_exists($INCrequestinfo["uploadDate"])) $inclContext = $INCrequestinfo["uploadDate"];
+	    elseif(file_exists($request["uploadDate"])) $inclContext = $request["uploadDate"];
+	    elseif(file_exists($score["uploadDate"])) $inclContext = $score["uploadDate"];
+	    switch(date("G", $inclContext)) {
+	        case date("G", $inclContext) == 12 && 0: // midnight
+	            $timeFormat = " AM";
+	            if(date('d/m/Y', $inclContext) == date('d/m/Y', time())) $dateFormat = "Today at ".date(("G.i"), $inclContext);
+	            elseif(date('d/m/Y', $inclContext) == date('d/m/Y', time() - 86400)) $dateFormat = "Yesterday at ".date(("G.i"), $inclContext);
+	            else $dateFormat = date(("d/m/Y G.i"), $inclContext);
+	            break;
+	        case date("G", $inclContext) > 11: // evening
+	            $timeFormat = " PM";
+	            if(date('d/m/Y', $inclContext) == date('d/m/Y', time())) $dateFormat = "Today at ".date(("G.i"), $inclContext);
+	            elseif(date('d/m/Y', $inclContext) == date('d/m/Y', time() - 86400)) $dateFormat = "Yesterday at ".date(("G.i"), $inclContext);
+	            else $dateFormat = date(("d/m/Y G.i"), $inclContext);
+	            break;
+	        case date("G", $inclContext) <= 11: // morning
+	            $timeFormat = " AM";
+	            if(date('d/m/Y', $inclContext) == date('d/m/Y', time())) $dateFormat = "Today at ".date(("G.i"), $inclContext);
+	            elseif(date('d/m/Y', $inclContext) == date('d/m/Y', time() - 86400)) $dateFormat = "Yesterday at ".date(("G.i"), $inclContext);
+	            else $dateFormat = date(("d/m/Y G.i"), $inclContext);
+	            break;
+	    }
+	    return $dateFormat.$timeFormat;
+	}
+	public function makeTime($time) {
+		// taken from https://stackoverflow.com/a/36297417
+		$time = time() - $time; // to get the time since that moment
+		$time = ($time < 1) ? 1 : $time; // ternary operator
+		$tokens = array (31536000 => 'year', 2592000 => 'month', 604800 => 'week', 86400 => 'day', 3600 => 'hour', 60 => 'minute', 1 => 'second');
+		foreach ($tokens as $unit => $text) {
+			if ($time < $unit) continue;
+			$numberOfUnits = floor($time / $unit);
+			return $numberOfUnits . ' ' . $text . (($numberOfUnits > 1) ? 's' : '');
 		}
 	}
-	public function getIDFromPost() {
+	public function getIDFromPost(){
 		include __DIR__ . "/../../config/security.php";
 		include_once __DIR__ . "/exploitPatch.php";
 		include_once __DIR__ . "/GJPCheck.php";
-		if(!empty($_POST["udid"]) AND $_POST['gameVersion'] < 20 AND $unregisteredSubmissions) {
+
+		if(!empty($_POST["udid"]) AND $_POST['gameVersion'] < 20 AND $unregisteredSubmissions) 
+		{
 			$id = ExploitPatch::remove($_POST["udid"]);
 			if(is_numeric($id)) exit("-1");
-		} elseif(!empty($_POST["accountID"]) AND $_POST["accountID"] !="0") $id = GJPCheck::getAccountIDOrDie();
-		else exit("-1");
+		}
+		elseif(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0")
+		{
+			$id = GJPCheck::getAccountIDOrDie();
+		}
+		else
+		{
+			exit("-1");
+		}
 		return $id;
 	}
 	public function getUserID($extID, $userName = "Undefined") {
@@ -357,15 +413,28 @@ class mainLib {
 		}
 	}
 	public function getUserString($userdata) {
-		$userdata['userName'] = $this->makeClanUsername($userdata);
+		/*include __DIR__ . "/connection.php";
+		$query = $db->prepare("SELECT extID FROM users WHERE userID = :id");
+		$query->execute([':id' => $userID]);
+		$userdata = $query->fetch();
+		$query = $db->prepare("SELECT userName FROM accounts WHERE accountID = :id");
+		$query->execute([':id' => $extID]);
+		$userName = $query->fetch();*/
 		$extID = is_numeric($userdata['extID']) ? $userdata['extID'] : 0;
 		return "{$userdata['userID']}:{$userdata["userName"]}:{$extID}";
 	}
 	public function getSongString($song){
 		include __DIR__ . "/connection.php";
 		include_once __DIR__ . "/exploitPatch.php";
-		if(!isset($song['ID'])) $song = $this->getLibrarySongInfo($song['songID']);
-		if(!$song || $song['ID'] == 0 || empty($song['ID']) || $song["isDisabled"] == 1) return false;
+		/*$query3=$db->prepare("SELECT ID,name,authorID,authorName,size,isDisabled,download FROM songs WHERE ID = :songid LIMIT 1");
+		$query3->execute([':songid' => $songID]);*/
+		if($song['ID'] == 0 || empty($song['ID'])){
+			return false;
+		}
+		//$song = $query3->fetch();
+		if($song["isDisabled"] == 1){
+			return false;
+		}
 		$dl = $song["download"];
 		if(strpos($dl, ':') !== false){
 			$dl = urlencode($dl);
@@ -378,14 +447,7 @@ class mainLib {
 	    $sinfo = $db->prepare("SELECT $column FROM songs WHERE ID = :id");
 	    $sinfo->execute([':id' => $id]);
 	    $sinfo = $sinfo->fetch();
-	    if(empty($sinfo)) {
-			$sinfo = $this->getLibrarySongInfo($id, 'music');
-			if(!$sinfo) return false;
-			else {
-				if($column != "*")  return $sinfo[$column];
-				else return array("ID" => $sinfo["ID"], "name" => $sinfo["name"], "authorName" => $sinfo["authorName"], "size" => $sinfo["size"], "duration" => $sinfo["duration"], "download" => $sinfo["download"], "reuploadTime" => $sinfo["reuploadTime"], "reuploadID" => $sinfo["reuploadID"]);
-			}
-		}
+	    if(empty($sinfo)) return false;
 	    else {
 	        if($column != "*")  return $sinfo[$column];
 	        else return array("ID" => $sinfo["ID"], "name" => $sinfo["name"], "authorName" => $sinfo["authorName"], "size" => $sinfo["size"], "duration" => $sinfo["duration"], "download" => $sinfo["download"], "reuploadTime" => $sinfo["reuploadTime"], "reuploadID" => $sinfo["reuploadID"]);
@@ -404,7 +466,7 @@ class mainLib {
 	    }
 	}
 	public function getClanInfo($clan, $column = "*") {
-	    global $dashCheck;
+		global $dashCheck;
 	    if(!is_numeric($clan) || $dashCheck === 'no') return false;
 	    include __DIR__ . "/connection.php";
 	    $claninfo = $db->prepare("SELECT $column FROM clans WHERE ID = :id");
@@ -413,20 +475,20 @@ class mainLib {
 	    if(empty($claninfo)) return false;
 	    else {
 	        if($column != "*") {
-	            if($column != "clan" AND $column != "desc" AND $column != "tag") return $claninfo[$column];
+	            if($column != "clan" AND $column != "desc") return $claninfo[$column];
 	            else return base64_decode($claninfo[$column]);
 	        }
-	        else return array("ID" => $claninfo["ID"], "clan" => base64_decode($claninfo["clan"]), "tag" => base64_decode($claninfo["tag"]), "desc" => base64_decode($claninfo["desc"]), "clanOwner" => $claninfo["clanOwner"], "color" => $claninfo["color"], "isClosed" => $claninfo["isClosed"], "creationDate" => $claninfo["creationDate"]);
+	        else return array("ID" => $claninfo["ID"], "clan" => base64_decode($claninfo["clan"]), "desc" => base64_decode($claninfo["desc"]), "clanOwner" => $claninfo["clanOwner"], "color" => $claninfo["color"], "isClosed" => $claninfo["isClosed"], "creationDate" => $claninfo["creationDate"]);
 	    }
 	}
 	public function getClanID($clan) {
 		global $dashCheck;
 	    if($dashCheck === 'no') return false;
 	    include __DIR__ . "/connection.php";
-	    $claninfo = $db->prepare("SELECT ID FROM clans WHERE clan = :id");
+	    $claninfo = $db->prepare("SELECT ID FROM clans WHERE clan LIKE :id");
 	    $claninfo->execute([':id' => base64_encode($clan)]);
-	    $claninfo = $claninfo->fetch();
-	    return $claninfo["ID"];
+	    $claninfo = $claninfo->fetchColumn();
+	    return $claninfo;
 	}
 	public function isPlayerInClan($id) {
 		global $dashCheck;
@@ -446,9 +508,9 @@ class mainLib {
 		$claninfo->execute([':id' => $clan]);
 		return $claninfo->fetchColumn();
 	}
-    public function sendDiscordPM($receiver, $message, $json = false){
+	public function sendDiscordPM($receiver, $message) {
 		include __DIR__ . "/../../config/discord.php";
-		if(!$discordEnabled) {
+		if(!$discordEnabled){
 			return false;
 		}
 		//findind the channel id
@@ -479,8 +541,7 @@ class mainLib {
 		$headr = array();
 		$headr['User-Agent'] = 'GMDprivateServer (https://github.com/Cvolton/GMDprivateServer, 1.0)';
 		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
-		if(!$json) curl_setopt($crl, CURLOPT_POSTFIELDS, $data_string);
-		else curl_setopt($crl, CURLOPT_POSTFIELDS, $message);
+		curl_setopt($crl, CURLOPT_POSTFIELDS, $data_string);
 		$headr[] = 'Content-type: application/json';
 		$headr[] = 'Authorization: Bot '.$bottoken;
 		curl_setopt($crl, CURLOPT_HTTPHEADER,$headr);
@@ -547,14 +608,6 @@ class mainLib {
 		$desc = $desc->fetch();
 		if($desc["starStars"] == 0) return false; 
 		else return true;
-	} 
-	public function hasDiscord($acc) {
-		include __DIR__ . "/connection.php";
-		$ds = $db->prepare("SELECT discordID, discordLinkReq FROM accounts WHERE accountID = :id");
-		$ds->execute([':id' => $acc]); 
-		$ds = $ds->fetch();
-		if($ds["discordID"] != 0 AND $ds["discordLinkReq"] == 0) return $ds["discordID"];
-		else return false;
 	}
 	public function randomString($length = 6) {
 		$randomString = openssl_random_pseudo_bytes($length);
@@ -741,6 +794,7 @@ class mainLib {
 	}
 	public function getAccountCommentColor($accountID){
 		if(!is_numeric($accountID)) return false;
+
 		include __DIR__ . "/connection.php";
 		$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
 		$query->execute([':accountID' => $accountID]);
@@ -766,7 +820,7 @@ class mainLib {
 			return $query->fetchColumn();
 		return "255,255,255";
 	}
-	public function rateLevel($accountID, $levelID, $stars, $difficulty, $auto, $demon) {
+	public function rateLevel($accountID, $levelID, $stars, $difficulty, $auto, $demon){
 		if(!is_numeric($accountID)) return false;
 		include __DIR__ . "/connection.php";
 		$diffName = $this->getDiffFromStars($stars)["name"];
@@ -775,33 +829,34 @@ class mainLib {
 		$query->execute([':demon' => $demon, ':auto' => $auto, ':diff' => $difficulty, ':stars' => $stars, ':levelID'=>$levelID, ':now' => time()]);
 		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $diffName, ':timestamp' => time(), ':id' => $accountID, ':value2' => $stars, ':levelID' => $levelID]);
-		$this->sendRateWebhook($accountID, $levelID);
 	}
 	public function featureLevel($accountID, $levelID, $state) {
 		if(!is_numeric($accountID)) return false;
-		include __DIR__ . "/connection.php";
-		$query = $db->prepare("SELECT starFeatured FROM levels WHERE levelID=:levelID ORDER BY starFeatured DESC LIMIT 1");
-		$query->execute([':levelID' => $levelID]);
-		$featured = $query->fetchColumn();
-		if (!$featured) {
-			$query = $db->prepare("SELECT starFeatured FROM levels ORDER BY starFeatured DESC LIMIT 1");
-			$query->execute();
-			$featured = $query->fetchColumn() + 1;
-		}
 		switch($state) {
-			case 0:
-				$feature = 0;
-				$epic = 0;
-				break;
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-				$feature = $featured;
-				$epic = $state - 1;
-				break;
-		}
-		$query = $db->prepare("UPDATE levels SET starFeatured=:feature, starEpic=:epic, rateDate=:now WHERE levelID=:levelID");
+            case 0:
+                $feature = 0;
+                $epic = 0;
+                break;
+            case 1:
+                $feature = 1;
+                $epic = 0;
+                break;
+            case 2: // Stole from TheJulfor
+                $feature = 1;
+                $epic = 1;
+                break;
+            case 3:
+                $feature = 1;
+                $epic = 2;
+                break;
+            case 4:
+                $feature = 1;
+                $epic = 3;
+                break;
+        }
+		include __DIR__ . "/connection.php";
+		$query = "UPDATE levels SET starFeatured=:feature, starEpic=:epic, rateDate=:now WHERE levelID=:levelID";
+		$query = $db->prepare($query);	
 		$query->execute([':feature' => $feature, ':epic' => $epic, ':levelID' => $levelID, ':now' => time()]);
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $state, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
@@ -864,12 +919,12 @@ class mainLib {
 		curl_close($ch);
 		return ['size' => $size, 'type' => $mime];
 	}
-	public function suggestLevel($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon) {
+	public function suggestLevel($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon){
 		if(!is_numeric($accountID)) return false;
 		include __DIR__ . "/connection.php";
-		$query = $db->prepare("INSERT INTO suggest (suggestBy, suggestLevelID, suggestDifficulty, suggestStars, suggestFeatured, suggestAuto, suggestDemon, timestamp) VALUES (:account, :level, :diff, :stars, :feat, :auto, :demon, :timestamp)");
+		$query = "INSERT INTO suggest (suggestBy, suggestLevelID, suggestDifficulty, suggestStars, suggestFeatured, suggestAuto, suggestDemon, timestamp) VALUES (:account, :level, :diff, :stars, :feat, :auto, :demon, :timestamp)";
+		$query = $db->prepare($query);
 		$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':stars' => $stars, ':feat' => $feat, ':auto' => $auto, ':demon' => $demon, ':timestamp' => time()]);
-		$this->sendSuggestWebhook($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon);
 	}
  	public function isUnlisted($levelID) {
         include __DIR__."/connection.php";
@@ -905,19 +960,11 @@ class mainLib {
 		$query->execute([':id' => $listID]);
 		return $query->fetchColumn();
 	}
-	public function makeClanUsername($user) {
-		include __DIR__ . "/../../config/dashboard.php";
-		if($clansEnabled && $user['clan'] > 0) {
-			$clan = $this->getClanInfo($user['clan'], 'tag');
-			if(!empty($clan)) return '['.$clan.'] '.$user['userName'];
-		}
-		return $user['userName'];
-	}
 	public function updateLibraries($token, $expires, $mainServerTime, $type = 0) {
 		include __DIR__ . "/../../config/dashboard.php";
 		$servers = [];
 		$types = ['sfx', 'music'];
-		if(!isset($customLibrary)) $customLibrary = [[1, 'Geometry Dash', 'https://geometrydashfiles.b-cdn.net'], [3, $gdps, null]]; 
+		if(!isset($customLibrary)) $customLibrary = [[1, 'Geometry Dash', 'https://geometrydashfiles.b-cdn.net'], [3, $gdps, null]];
 		foreach($customLibrary AS $library) {
 			if(($types[$type] == 'sfx' AND $library[3] === 1) OR ($types[$type] == 'music' AND $library[3] === 0)) continue;
 			if($library[2] !== null) {
@@ -929,16 +976,17 @@ class mainLib {
 			if(file_exists(__DIR__.'/../../'.$types[$type].'/'.$key.'.txt')) $oldVersion = explode(', ', file_get_contents(__DIR__.'/../../'.$types[$type].'/'.$key.'.txt'));
 			else $oldVersion = [0, 0];
 			if($oldVersion[1] + 600 > time()) continue; // Download library only once per 10 minutes
-			$curl = curl_init($server.'/'.$types[$type].'/'.$types[$type].'library_version_02.txt?token='.$token.'&expires='.$expires);
+			$curl = curl_init($server.'/'.$types[$type].'/'.$types[$type].'library_version.txt?token='.$token.'&expires='.$expires);
 			curl_setopt_array($curl, [
 				CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
 				CURLOPT_RETURNTRANSFER => 1
 			]);
 			$newVersion = (int)curl_exec($curl);
 			curl_close($curl);
+			$jsonVersion = $newVersion.', '.time();
+			file_put_contents(__DIR__.'/../../'.$types[$type].'/'.$key.'.txt', $jsonVersion);
 			if($newVersion > $oldVersion[0]) {
-				file_put_contents(__DIR__.'/../../'.$types[$type].'/'.$key.'.txt', $newVersion.', '.time());
-				$download = curl_init($server.'/'.$types[$type].'/'.$types[$type].'library_02.dat?token='.$token.'&expires='.$expires.'&dashboard=1');
+				$download = curl_init($server.'/'.$types[$type].'/'.$types[$type].'library.dat?token='.$token.'&expires='.$expires);
 				curl_setopt_array($download, [
 					CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
 					CURLOPT_RETURNTRANSFER => 1
@@ -962,7 +1010,7 @@ class mainLib {
 		include __DIR__ . "/exploitPatch.php";
 		include __DIR__ . "/../../config/dashboard.php";
 		$library = $servers = $serverIDs = $serverTypes = [];
-		if(!isset($customLibrary)) $customLibrary = [[1, 'Geometry Dash', 'https://geometrydashfiles.b-cdn.net', 2], [3, $gdps, null, 2]]; 
+		if(!isset($customLibrary)) $customLibrary = [[1, 'Geometry Dash', 'https://geometrydashfiles.b-cdn.net', 2], [3, $gdps, null, 2]];
 		$types = ['sfx', 'music'];
 		foreach($customLibrary AS $customLib) {
 			if($customLib[2] !== null) {
@@ -984,8 +1032,6 @@ class mainLib {
 		}
 		if(file_exists(__DIR__.'/../../'.$types[$type].'/ids.json')) $idsConverter = json_decode(file_get_contents(__DIR__.'/../../'.$types[$type].'/ids.json'), true);
 		else $idsConverter = ['count' => ($type == 0 ? count($customLibrary) + 2 : 8000000), 'IDs' => [], 'originalIDs' => []];
-		if(file_exists(__DIR__.'/../../config/skipSFXIDs.json')) $skipSFXIDs = json_decode(file_get_contents(__DIR__.'/../../config/skipSFXIDs.json'), true);
-		else $skipSFXIDs = [];
 		foreach($servers AS $key => $server) {
 			if(!file_exists(__DIR__.'/../../'.$types[$type].'/'.$key.'.dat')) continue;
 			$res = null;
@@ -1008,22 +1054,17 @@ class mainLib {
 						$bits = explode(',', $res[$i][$j]);
 						switch($i) {
 							case 0: // File/Folder
-								if(empty(trim($bits[1]))) continue 2;
-								if(!isset($idsConverter['originalIDs'][$server][$bits[0]]) && !isset($idsConverter['IDs'][$bits[0]])) {
+								if(empty(trim($bits[1]))) continue;
+								if(!isset($idsConverter['originalIDs'][$server][$bits[0]])) {
 									$idsConverter['count']++;
-									while(in_array($idsConverter['count'], $skipSFXIDs)) $idsConverter['count']++;
-									$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $bits[0], 'name' => $bits[1], 'type' => $bits[2]];
+									$idsConverter['IDs'][$idsConverter['count']] = [$server, $bits[0]];
 									$idsConverter['originalIDs'][$server][$bits[0]] = $idsConverter['count'];
 									$bits[0] = $idsConverter['count'];
-								} else {
-									$bits[0] = $idsConverter['originalIDs'][$server][$bits[0]];
-									if(!isset($idsConverter['IDs'][$bits[0]]['name'])) $idsConverter['IDs'][$bits[0]] = ['server' => $server, 'ID' => $bits[0], 'name' => $bits[1], 'type' => $bits[2]];
-								}
+								} else $bits[0] = $idsConverter['originalIDs'][$server][$bits[0]];
 								if($bits[3] != 1) {
-									if(!isset($idsConverter['originalIDs'][$server][$bits[3]]) && !isset($idsConverter['IDs'][$bits[3]])) {
+									if(!isset($idsConverter['originalIDs'][$server][$bits[3]])) {
 										$idsConverter['count']++;
-										while(in_array($idsConverter['count'], $skipSFXIDs)) $idsConverter['count']++;
-										$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $bits[3], 'name' => $bits[1], 'type' => 1];
+										$idsConverter['IDs'][$idsConverter['count']] = [$server, $bits[3]];
 										$idsConverter['originalIDs'][$server][$bits[3]] = $idsConverter['count'];
 										$bits[3] = $idsConverter['count'];
 									} else $bits[3] = $idsConverter['originalIDs'][$server][$bits[3]];
@@ -1045,7 +1086,7 @@ class mainLib {
 								}
 								break;
 							case 1: // Credit
-								if(empty(trim($bits[0])) || empty(trim($bits[1]))) continue 2;
+								if(empty(trim($bits[0])) || empty(trim($bits[1]))) continue;
 								$library['credits'][ExploitPatch::escapedat($bits[0])] = [
 									'name' => ExploitPatch::escapedat($bits[0]),
 									'website' => ExploitPatch::escapedat($bits[1]),
@@ -1064,36 +1105,12 @@ class mainLib {
 					foreach($music AS &$songString) {
 						$song = explode(',', $songString);
 						if(empty($song[0])) continue;
-						if(!isset($idsConverter['originalIDs'][$server][$song[0]]) && !isset($idsConverter['IDs'][$song[0]])) {
+						if(!isset($idsConverter['originalIDs'][$server][$song[0]])) {
 							$idsConverter['count']++;
-							$fuckText .= $song[1].' ('.$song[0].') was not found! New ID: '.$idsConverter['count'].PHP_EOL;
-							$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $song[0], 'name' => $song[1], 'type' => $x];
-							if($x == 1) {
-								$idsConverter['IDs'][$idsConverter['count']]['size'] = $song[3];
-								if(!isset($idsConverter['originalIDs'][$server][$song[2]]) && !isset($idsConverter['IDs'][$song[2]])) {
-									$idsConverter['count']++;
-									$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $song[2], 'type' => 0];
-									$idsConverter['originalIDs'][$server][$song[2]] = $idsConverter['count'];
-									$song[2] = $idsConverter['count'];
-								} else $song[2] = $idsConverter['originalIDs'][$server][$song[2]];
-								$idsConverter['IDs'][$idsConverter['count']]['authorID'] = $song[2];
-							}
+							$idsConverter['IDs'][$idsConverter['count']] = [$server, $song[0]];
 							$idsConverter['originalIDs'][$server][$song[0]] = $idsConverter['count'];
 							$song[0] = $idsConverter['count'];
-						} else {
-							$fuckText .= $song[1].' ('.$song[0].') was found! ID: '.$idsConverter['originalIDs'][$server][$song[0]].PHP_EOL;
-							$song[0] = $idsConverter['originalIDs'][$server][$song[0]];
-							if($x == 1) {
-								$idsConverter['IDs'][$idsConverter['count']]['size'] = $song[3];
-								if(!isset($idsConverter['originalIDs'][$server][$song[2]]) && !isset($idsConverter['IDs'][$song[2]])) {
-									$idsConverter['count']++;
-									$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $song[2], 'type' => 0];
-									$idsConverter['originalIDs'][$server][$song[2]] = $idsConverter['count'];
-									$song[2] = $idsConverter['count'];
-								} else $song[2] = $idsConverter['originalIDs'][$server][$song[2]];
-								$idsConverter['IDs'][$idsConverter['count']]['authorID'] = $song[2];
-							} elseif(!isset($idsConverter['IDs'][$song[0]]['name'])) $idsConverter['IDs'][$song[0]] = ['server' => $idsConverter['IDs'][$song[0]][0], 'ID' => $idsConverter['IDs'][$song[0]][1], 'name' => $song[1], 'type' => $x];
-						}
+						} else $song[0] = $idsConverter['originalIDs'][$server][$song[0]];
 						switch($x) {
 							case 0:
 								$library['authors'][$song[0]] = [
@@ -1104,13 +1121,19 @@ class mainLib {
 								];
 								break;
 							case 1:
+								if(!isset($idsConverter['originalIDs'][$server][$song[2]])) {
+									$idsConverter['count']++;
+									$idsConverter['IDs'][$idsConverter['count']] = [$server, $song[2]];
+									$idsConverter['originalIDs'][$server][$song[2]] = $idsConverter['count'];
+									$song[2] = $idsConverter['count'];
+								} else $song[2] = $idsConverter['originalIDs'][$server][$song[2]];
 								$tags = explode('.', $song[5]);
 								$newTags = [];
 								foreach($tags AS &$tag) {
 									if(empty($tag)) continue;
-									if(!isset($idsConverter['originalIDs'][$server][$tag]) && !isset($idsConverter['IDs'][$tag])) {
+									if(!isset($idsConverter['originalIDs'][$server][$tag])) {
 										$idsConverter['count']++;
-										$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $tag, 'type' => 2];
+										$idsConverter['IDs'][$idsConverter['count']] = [$server, $tag];
 										$idsConverter['originalIDs'][$server][$tag] = $idsConverter['count'];
 										$tag = $idsConverter['count'];
 									} else $tag = $idsConverter['originalIDs'][$server][$tag];
@@ -1143,12 +1166,12 @@ class mainLib {
 			$sfxs = $db->prepare("SELECT sfxs.*, accounts.userName FROM sfxs JOIN accounts ON accounts.accountID = sfxs.reuploadID");
 			$sfxs->execute();
 			$sfxs = $sfxs->fetchAll();
-			$folderID = $gdpsLibrary = [];
+			$folderID = [];
 			$server = $serverIDs[null];
 			foreach($sfxs AS &$customSFX) {
 				if(!isset($folderID[$customSFX['reuploadID']])) {
 					$idsConverter['count']++;
-					$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $customSFX['ID'], 'name' => $customSFX['userName'].'\'s SFXs', 'type' => 1];
+					$idsConverter['IDs'][$idsConverter['count']] = [$serverIDs[null], $customSFX['reuploadID']];
 					$idsConverter['originalIDs'][$server][$customSFX['reuploadID']] = $idsConverter['count'];
 					$newID = $idsConverter['count'];
 					$library['folders'][$newID] = [
@@ -1156,18 +1179,13 @@ class mainLib {
 						'type' => 1,
 						'parent' => (int)($server + 1)
 					];
-					$gdpsLibrary['folders'][$newID] = [
-						'name' => ExploitPatch::escapedat($customSFX['userName']).'\'s SFXs',
-						'type' => 1,
-						'parent' => 1
-					];
 					$folderID[$customSFX['reuploadID']] = true;
 				}
 				$idsConverter['count']++;
-				$idsConverter['IDs'][$idsConverter['count']] = ['server' => $server, 'ID' => $customSFX['ID'], 'name' => $customSFX['name'], 'type' => 0];
+				$idsConverter['IDs'][$idsConverter['count']] = [$serverIDs[null], $customSFX['ID']];
 				$idsConverter['originalIDs'][$server][$customSFX['ID']] = $idsConverter['count'];
 				$customSFX['ID'] = $idsConverter['count'];
-				$library['files'][$customSFX['ID']] = $gdpsLibrary['files'][$customSFX['ID']] = [
+				$library['files'][$customSFX['ID']] = [
 					'name' => ExploitPatch::escapedat($customSFX['name']),
 					'type' => 0,
 					'parent' => (int)$idsConverter['originalIDs'][$server][$customSFX['reuploadID']],
@@ -1179,23 +1197,18 @@ class mainLib {
 			foreach($library['files'] AS $id => &$file) $filesEncrypted[] = implode(',', [$id, $file['name'], 0, $file['parent'], $file['bytes'], $file['milliseconds']]);
 			foreach($library['credits'] AS &$credit) $creditsEncrypted[] = implode(',', [$credit['name'], $credit['website']]);
 			$encrypted = $version.";".implode(';', $filesEncrypted)."|" .implode(';', $creditsEncrypted).';';
-			$filesEncrypted = $creditsEncrypted = [];
-			foreach($gdpsLibrary['folders'] AS $id => &$folder) $filesEncrypted[] = implode(',', [$id, $folder['name'], 1, $folder['parent'], 0, 0]);
-			foreach($gdpsLibrary['files'] AS $id => &$file) $filesEncrypted[] = implode(',', [$id, $file['name'], 0, $file['parent'], $file['bytes'], $file['milliseconds']]);
-			$creditsEncrypted[] = implode(',', [$gdps, $_SERVER['SERVER_NAME']]);
-			$gdpsEncrypted = $version.";".implode(';', $filesEncrypted)."|" .implode(';', $creditsEncrypted).';';
 		} else {
 			$songs = $db->prepare("SELECT songs.*, accounts.userName FROM songs JOIN accounts ON accounts.accountID = songs.reuploadID");
 			$songs->execute();
 			$songs = $songs->fetchAll();
-			$folderID = $accIDs = $gdpsLibrary = [];
+			$folderID = $accIDs = [];
 			$c = 0;
 			foreach($songs AS &$customSongs) {
 				$c++;
 				$authorName = ExploitPatch::escapedat(ExploitPatch::rutoen(trim($customSongs['authorName'])));
 				if(!isset($folderID[$authorName])) {
 					$folderID[$authorName] = $c;
-					$library['authors'][$serverIDs[null]. 0 .$folderID[$authorName]] = $gdpsLibrary['authors'][$serverIDs[null]. 0 .$folderID[$authorName]] = [
+					$library['authors'][$serverIDs[null]. 0 .$folderID[$authorName]] = [
 						'authorID' => ($serverIDs[null]. 0 .$folderID[$authorName]),
 						'name' => $authorName,
 						'link' => ' ',
@@ -1204,13 +1217,13 @@ class mainLib {
 				}
 				if(!isset($accIDs[$customSongs['reuploadID']])) {
 					$accIDs[$customSongs['reuploadID']] = true;
-					$library['tags'][$serverIDs[null]. 0 .$customSongs['reuploadID']] = $gdpsLibrary['tags'][$serverIDs[null]. 0 .$customSongs['reuploadID']] = [
+					$library['tags'][$serverIDs[null]. 0 .$customSongs['reuploadID']] = [
 						'ID' => ($serverIDs[null]. 0 .$customSongs['reuploadID']),
 						'name' => ExploitPatch::escapedat($customSongs['userName']),
 					];
 				}
 				$customSongs['name'] = trim($customSongs['name']);
-				$library['songs'][$customSongs['ID']] = $gdpsLibrary['songs'][$customSongs['ID']] = [
+				$library['songs'][$customSongs['ID']] = [
 					'ID' => ($customSongs['ID']),
 					'name' => !empty($customSongs['name']) ? ExploitPatch::escapedat(ExploitPatch::rutoen($customSongs['name'])) : 'Unnamed',
 					'authorID' => ($serverIDs[null]. 0 .$folderID[$authorName]),
@@ -1223,19 +1236,11 @@ class mainLib {
 			foreach($library['songs'] AS &$songsList) $songsEncrypted[] = implode(',', $songsList);
 			foreach($library['tags'] AS &$tagsList) $tagsEncrypted[] = implode(',', $tagsList);
 			$encrypted = $version."|".implode(';', $authorsEncrypted).";|" .implode(';', $songsEncrypted).";|" .implode(';', $tagsEncrypted).';';
-			$authorsEncrypted = $songsEncrypted = $tagsEncrypted = [];
-			foreach($gdpsLibrary['authors'] AS &$authorList) $authorsEncrypted[] = implode(',', $authorList);
-			foreach($gdpsLibrary['songs'] AS &$songsList) $songsEncrypted[] = implode(',', $songsList);
-			foreach($gdpsLibrary['tags'] AS &$tagsList) $tagsEncrypted[] = implode(',', $tagsList);
-			$gdpsEncrypted = $version."|".implode(';', $authorsEncrypted).";|" .implode(';', $songsEncrypted).";|" .implode(';', $tagsEncrypted).';';
 		}
-		file_put_contents(__DIR__.'/../../'.$types[$type].'/ids.json', json_encode($idsConverter, JSON_PRETTY_PRINT | JSON_INVALID_UTF8_IGNORE));
+		file_put_contents(__DIR__.'/../../'.$types[$type].'/ids.json', json_encode($idsConverter, JSON_PRETTY_PRINT));
 		$encrypted = zlib_encode($encrypted, ZLIB_ENCODING_DEFLATE);
 		$encrypted = strtr(base64_encode($encrypted), '+/=', '-_=');
 		file_put_contents(__DIR__.'/../../'.$types[$type].'/gdps.dat', $encrypted);
-		$gdpsEncrypted = zlib_encode($gdpsEncrypted, ZLIB_ENCODING_DEFLATE);
-		$gdpsEncrypted = strtr(base64_encode($gdpsEncrypted), '+/=', '-_=');
-		file_put_contents(__DIR__.'/../../'.$types[$type].'/standalone.dat', $gdpsEncrypted);
 	}
 	public function getAudioDuration($file) {
 		require_once(__DIR__.'/../../config/getid3/getid3.php');
@@ -1244,602 +1249,7 @@ class mainLib {
 		$result = (isset($info['playtime_seconds']) ? (int)($info['playtime_seconds']) : false);
 		return $result;
 	}
-	public function convertSFX($file, $server, $name, $token) {
-		include __DIR__."/../../config/dashboard.php";
-		if(!$convertEnabled) return false;
-		$link = $convertSFXAPI[rand(0, count($convertSFXAPI) - 1)];
-		$filePath = $file['tmp_name'];
-		$type = $file['type'];
-		$post = [
-			'name' => $name,
-			'token' => $token,
-			'server' => $server,
-			'file' => new CURLFile(realpath($filePath), $type, $filePath)
-		];
-		$curl = curl_init($link.'/convert');
-		curl_setopt_array($curl, [
-			CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
-			CURLOPT_RETURNTRANSFER => 1,
-			CURLOPT_POST => true,
-			CURLOPT_POSTFIELDS => $post
-		]);
-		$response = json_decode(curl_exec($curl), true);
-		$result = isset($response['success']) ? $response['success'] : false;
-		return $result;
-	}
-	public function getLibrarySongInfo($id, $type = 'music') {
-		include __DIR__."/../../config/dashboard.php";
-		if(!file_exists(__DIR__.'/../../'.$type.'/ids.json')) return false;
-		$servers = $serverIDs = $serverNames = [];
-		foreach($customLibrary AS $customLib) {
-			$servers[$customLib[0]] = $customLib[2];
-			$serverNames[$customLib[0]] = $customLib[1];
-			$serverIDs[$customLib[2]] = $customLib[0];
-		}
-		$library = json_decode(file_get_contents(__DIR__.'/../../'.$type.'/ids.json'), true);
-		if(!isset($library['IDs'][$id])) return false;
-		if($type == 'music') {
-			$song = $library['IDs'][$id];
-			$author = $library['IDs'][$song['authorID']];
-			$token = $this->randomString(11);
-			$expires = time() + 3600;
-			$link = $servers[$song['server']].'/music/'.$song['ID'].'.ogg?token='.$token.'&expires='.$expires;
-			return ['server' => $song['server'], 'ID' => $id, 'name' => $song['name'], 'authorID' => $song['authorID'], 'authorName' => $author['name'], 'size' => round($song['size'] / 1024 / 1024, 2), 'download' => $link];
-		} else {
-			$SFX = $library['IDs'][$id];
-			$token = $this->randomString(11);
-			$expires = time() + 3600;
-			$type = $type == 'sfx' ? 'sfx/s' : 'music/';
-			$link = $servers[$SFX['server']] != null ? $servers[$SFX['server']].'/'.$type.$SFX['ID'].'.ogg?token='.$token.'&expires='.$expires : $this->getSFXInfo($SFX['ID'], 'download');
-			return ['server' => $SFX['server'], 'ID' => $id, 'name' => $song['name'], 'download' => $link];
-		}
-	}
-	public function sendRateWebhook($modAccID, $levelID) {
-		include __DIR__."/connection.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
-		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($levelID) OR !in_array("rate", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
-		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
-		$dw = new DiscordWebhook($rateWebhook);
-		$level = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
-		$level->execute([':levelID' => $levelID]);
-		$level = $level->fetch();
-		if(!$level) return false;
-		$modUsername = $this->getAccountName($modAccID);
-		$modHasDiscord = $this->hasDiscord($modAccID);
-		$modFormattedUsername = $modHasDiscord ? "<@".$modHasDiscord.">" : "**".$modUsername."**";
-		$creatorAccID = $level['extID'];
-		$creatorUsername = $this->getAccountName($creatorAccID);
-		$creatorHasDiscord = $this->hasDiscord($creatorAccID);
-		$creatorFormattedUsername = $creatorHasDiscord ? "<@".$creatorHasDiscord.">" : "**".$creatorUsername."**";
-                $isRated = $level['starStars'] != 0;
-                $difficulty = $this->getDifficulty($level['starDifficulty'], $level['starAuto'], $level['starDemon'], $level['starDemonDiff']);
-                $starsIcon = 'stars';
-                $diffIcon = 'na';
-                switch(true) {
-                    case ($level['starEpic'] > 0):
-                        $starsArray = ['', 'epic', 'legendary', 'mythic'];
-                        $starsIcon = $starsArray[$level['starEpic']];
-                        break;
-                    case ($level['starFeatured'] > 0):
-                        $starsIcon = 'featured';
-                        break;
-                }
-                $diffArray = ['n/a' => 'na', 'auto' => 'auto', 'easy' => 'easy', 'normal' => 'normal', 'hard' => 'hard', 'harder' => 'harder', 'insane' => 'insane', 'demon' => 'demon-hard', 'easy demon' => 'demon-easy', 'medium demon' => 'demon-medium', 'hard demon' => 'demon-hard', 'insane demon' => 'demon-insane', 'extreme demon' => 'demon-extreme'];
-                $diffIcon = $diffArray[strtolower($difficulty)] ?? 'na';
-                $originalDiffColorArray = ['na' => 'a9a9a9', 'auto' => 'f5c96b', 'easy' => '00e0ff', 'normal' => '00ff3a', 'hard' => 'ffb438', 'harder' => 'fc1f1f', 'insane' => 'f91ffc', 'demon-easy' => 'aa6bf5', 'demon-medium' => 'ac2974', 'demon-hard' => 'ff0000', 'demon-insane' => 'b31548', 'demon-extreme' => '8e0505'];
-                    $originalDiffColor = $originalDiffColor && empty($successColor);
-                    if($level['starStars'] != 0) {
-                        $setColor = empty($successColor) ? $originalDiffColorArray[$diffIcon] : $successColor;
-			$setTitle = $this->webhookLanguage('rateSuccessTitle', $webhookLangArray);
-			$dmTitle = $this->webhookLanguage('rateSuccessTitleDM', $webhookLangArray);
-			$setDescription = sprintf($this->webhookLanguage('rateSuccessDesc', $webhookLangArray), $modFormattedUsername);
-			$dmDescription = sprintf($this->webhookLanguage('rateSuccessDescDM', $webhookLangArray), $modFormattedUsername, $tadaEmoji);
-			$setNotificationText = $rateNotificationText;
-		} else {
-			$setColor = $failColor;
-			$setTitle = $this->webhookLanguage('rateFailTitle', $webhookLangArray);
-			$dmTitle = $this->webhookLanguage('rateFailTitleDM', $webhookLangArray);
-			$setDescription = sprintf($this->webhookLanguage('rateFailDesc', $webhookLangArray), $modFormattedUsername);
-			$dmDescription = sprintf($this->webhookLanguage('rateFailDescDM', $webhookLangArray), $modFormattedUsername, $sobEmoji);
-			$setNotificationText = $unrateNotificationText;
-		}
-		$stats = $downloadEmoji.' '.$level['downloads'].' | '.($level['likes'] - $level['dislikes'] >= 0 ? $likeEmoji.' '.abs($level['likes'] - $level['dislikes']) : $dislikeEmoji.' '.abs($level['likes'] - $level['dislikes']));
-		$levelField = [$this->webhookLanguage('levelTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername), true];
-		$IDField = [$this->webhookLanguage('levelIDTitle', $webhookLangArray), $level['levelID'], true];
-		if($level['starStars'] == 1) $action = 0; elseif(($level['starStars'] < 5 AND $level['starStars'] != 0) AND !($level['starStars'] > 9 AND $level['starStars'] < 20)) $action = 1; else $action = 2;
-		$difficultyField = [$this->webhookLanguage('difficultyTitle', $webhookLangArray), sprintf($this->webhookLanguage('difficultyDesc' . ($level['levelLength'] == 5 ? 'Moon' : '') . $action, $webhookLangArray), $difficulty, $level['starStars']), true];
-		$statsField = [$this->webhookLanguage('statsTitle', $webhookLangArray), $stats, true];
-		if($level['requestedStars'] == 1) $action = 0; elseif(($level['requestedStars'] < 5 AND $level['requestedStars'] != 0) AND !($level['requestedStars'] > 9 AND $level['requestedStars'] < 20)) $action = 1; else $action = 2;
-		$requestedField = $level['requestedStars'] > 0 ? [$this->webhookLanguage('requestedTitle', $webhookLangArray), sprintf($this->webhookLanguage('requestedDesc' . ($level['levelLength'] == 5 ? 'Moon' : '') . $action, $webhookLangArray), $level['requestedStars']), true] : [];
-		$descriptionField = [$this->webhookLanguage('descTitle', $webhookLangArray), (!empty($level['levelDesc']) ? base64_decode($level['levelDesc']) : $this->webhookLanguage('descDesc', $webhookLangArray)), false];
-		$setThumbnail = $difficultiesURL.$starsIcon.'/'.$diffIcon.'.png';
-		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
-		$dw->newMessage()
-		->setContent($setNotificationText)
-		->setAuthor($gdps, $authorURL, $authorIconURL)
-		->setColor($setColor)
-		->setTitle($setTitle, $rateTitleURL)
-		->setDescription($setDescription)
-		->setThumbnail($setThumbnail)
-		->addFields($levelField, $IDField, $difficultyField, $statsField, $requestedField, $descriptionField)
-		->setFooter($setFooter, $footerIconURL)
-		->setTimestamp()
-		->send(); 
-		if($dmNotifications && $creatorHasDiscord) {
-			$embed = $this->generateEmbedArray(
-				[$gdps, $authorURL, $authorIconURL],
-				$setColor,
-				[$dmTitle, $rateTitleURL],
-				$dmDescription,
-				$setThumbnail,
-				[$levelField, $IDField, $difficultyField, $statsField, $requestedField, $descriptionField],
-				[$setFooter, $footerIconURL]
-			);
-			$json = json_encode([
-				"content" => "",
-				"tts" => false,
-				"embeds" => [$embed]
-			], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-			$this->sendDiscordPM($creatorHasDiscord, $json, true);
-		}
-	}
-	public function generateEmbedArray($author, $color, $title, $description, $thumbnail, $fieldsArray, $footer) {
-		if(!is_array($author) || !is_array($title) || !is_array($fieldsArray) || !is_array($footer)) return false;
-		$fields = [];
-		$author = [
-			"name" => $author[0],
-			"url" => $author[1],
-			"icon_url" => $author[2]
-		];
-		foreach($fieldsArray AS &$field) {
-			if(!empty($field)) $fields[] = [
-				"name" => $field[0],
-				"value" => $field[1],
-				"inline" => $field[2]
-			];
-		}
-		$footer = [
-			"text" => $footer[0],
-			"icon_url" => $footer[1]
-		];
-		return [
-			"type" => "rich",
-			"timestamp" => date("c", time()),
-			"title" => $title[0],
-			"url" => $title[1],
-			"color" => hexdec($color),
-			"description" => $description,
-			"thumbnail" => ["url" => $thumbnail],
-			"footer" => $footer,
-			"author" => $author,
-			"fields" => $fields
-		];
-	}
-	public function webhookStartLanguage($lang) {
-		$fileExists = file_exists(__DIR__."/../../config/webhooks/lang/".$lang.".php");
-		if(!$fileExists) return false;
-		include __DIR__."/../../config/webhooks/lang/".$lang.".php";
-		return $webhookLang;
-	}
-	public function webhookLanguage($langString, $webhookLangArray) {
-		if(isset($webhookLangArray[$langString])) {
-			if(is_array($webhookLangArray[$langString])) return $webhookLangArray[$langString][rand(0, count($webhookLangArray[$langString]) - 1)];
-			else return $webhookLangArray[$langString];
-		}
-		return false;
-	}
-	public function changeDifficulty($accountID, $levelID, $difficulty, $auto, $demon) {
-		if(!is_numeric($accountID)) return false;
-		include __DIR__ . "/connection.php";
-		$query = "UPDATE levels SET starDemon=:demon, starAuto=:auto, starDifficulty=:diff, rateDate=:now WHERE levelID=:levelID";
-		$query = $db->prepare($query);	
-		$query->execute([':demon' => $demon, ':auto' => $auto, ':diff' => $difficulty, ':levelID'=>$levelID, ':now' => time()]);
-		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
-		$query->execute([':value' => $diffName, ':timestamp' => time(), ':id' => $accountID, ':value2' => 0, ':levelID' => $levelID]);
-	}
-	public function sendSuggestWebhook($modAccID, $levelID, $difficulty, $stars, $featured, $auto, $demon) {
-		include __DIR__."/connection.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
-		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($levelID) OR !in_array("suggest", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
-		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
-		$dw = new DiscordWebhook($suggestWebhook);
-		$level = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
-		$level->execute([':levelID' => $levelID]);
-		$level = $level->fetch();
-		if(!$level) return false;
-		$modUsername = $this->getAccountName($modAccID);
-		$modHasDiscord = $this->hasDiscord($modAccID);
-		$modFormattedUsername = $modHasDiscord ? "<@".$modHasDiscord.">" : "**".$modUsername."**";
-		$creatorAccID = $level['extID'];
-		$creatorUsername = $this->getAccountName($creatorAccID);
-		$creatorHasDiscord = $this->hasDiscord($creatorAccID);
-		$creatorFormattedUsername = $creatorHasDiscord ? "<@".$creatorHasDiscord.">" : "**".$creatorUsername."**";
-		$difficulty = $this->getDifficulty($difficulty, $auto, $demon);
-		$starsArray = ['stars', 'featured', 'epic', 'legendary', 'mythic'];
-		$starsIcon = $starsArray[$featured] ?? 'stars';
-		$diffArray = ['n/a' => 'na', 'auto' => 'auto', 'easy' => 'easy', 'normal' => 'normal', 'hard' => 'hard', 'harder' => 'harder', 'insane' => 'insane', 'demon' => 'demon-hard', 'easy demon' => 'demon-easy', 'medium demon' => 'demon-medium', 'hard demon' => 'demon-hard', 'insane demon' => 'demon-insane', 'extreme demon' => 'demon-extreme'];
-		$diffIcon = $diffArray[strtolower($difficulty)] ?? 'na';
-                $originalDiffColorArray = ['na' => 'a9a9a9', 'auto' => 'f5c96b', 'easy' => '00e0ff', 'normal' => '00ff3a', 'hard' => 'ffb438', 'harder' => 'fc1f1f', 'insane' => 'f91ffc', 'demon-easy' => 'aa6bf5', 'demon-medium' => 'ac2974', 'demon-hard' => 'ff0000', 'demon-insane' => 'b31548', 'demon-extreme' => '8e0505'];
-                $originalDiffColor = $originalDiffColor && empty($successColor);
-                $setColor = empty($successColor) ? $originalDiffColorArray[$diffIcon] : $successColor;
-		$setTitle = $this->webhookLanguage('suggestTitle', $webhookLangArray);
-		$setDescription = sprintf($this->webhookLanguage('suggestDesc', $webhookLangArray), $modFormattedUsername);
-		$stats = $downloadEmoji.' '.$level['downloads'].' | '.($level['likes'] - $level['dislikes'] >= 0 ? $likeEmoji.' '.abs($level['likes'] - $level['dislikes']) : $dislikeEmoji.' '.abs($level['likes'] - $level['dislikes']));
-		$levelField = [$this->webhookLanguage('levelTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername), true];
-		$IDField = [$this->webhookLanguage('levelIDTitle', $webhookLangArray), $level['levelID'], true];
-		if($stars == 1) $action = 0; elseif(($stars < 5 AND $stars != 0) AND !($stars > 9 AND $stars < 20)) $action = 1; else $action = 2;
-		$difficultyField = [$this->webhookLanguage('difficultyTitle', $webhookLangArray), sprintf($this->webhookLanguage('difficultyDesc' . ($level['levelLength'] == 5 ? 'Moon' : '') . $action, $webhookLangArray), $difficulty, $stars), true];
-		$statsField = [$this->webhookLanguage('statsTitle', $webhookLangArray), $stats, true];
-		if($level['requestedStars'] == 1) $action = 0; elseif(($level['requestedStars'] < 5 AND $level['requestedStars'] != 0) AND !($level['requestedStars'] > 9 AND $level['requestedStars'] < 20)) $action = 1; else $action = 2;
-		$requestedField = $level['requestedStars'] > 0 ? [$this->webhookLanguage('requestedTitle', $webhookLangArray), sprintf($this->webhookLanguage('requestedDesc' . ($level['levelLength'] == 5 ? 'Moon' : '') . $action, $webhookLangArray), $level['requestedStars']), true] : [];
-		$descriptionField = [$this->webhookLanguage('descTitle', $webhookLangArray), (!empty($level['levelDesc']) ? base64_decode($level['levelDesc']) : $this->webhookLanguage('descDesc', $webhookLangArray)), false];
-		$setThumbnail = $difficultiesURL.$starsIcon.'/'.$diffIcon.'.png';
-		$setFooter = sprintf($this->webhookLanguage('footerSuggest', $webhookLangArray), $gdps);
-		$dw->newMessage()
-		->setContent($suggestNotificationText)
-		->setAuthor($gdps, $authorURL, $authorIconURL)
-		->setColor($setColor)
-		->setTitle($setTitle, $rateTitleURL)
-		->setDescription($setDescription)
-		->setThumbnail($setThumbnail)
-		->addFields($levelField, $IDField, $difficultyField, $statsField, $requestedField, $descriptionField)
-		->setFooter($setFooter, $footerIconURL)
-		->setTimestamp()
-		->send();
-	}
-	public function sendDemonlistRecordWebhook($recordAccID, $recordID) {
-		include __DIR__."/connection.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
-		if(!$webhooksEnabled OR !is_numeric($recordAccID) OR !is_numeric($recordID) OR !in_array("demonlist", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
-		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
-		$dw = new DiscordWebhook($dlApproveWebhook);
-		$record = $db->prepare('SELECT * FROM dlsubmits WHERE ID = :ID');
-		$record->execute([':ID' => $recordID]);
-		$record = $record->fetch();
-		if(!$record) return false;
-		$level = $db->prepare('SELECT * FROM levels WHERE levelID = :ID');
-		$level->execute([':ID' => $record['levelID']]);
-		$level = $level->fetch();
-		if(!$level) return false;
-		$recordUsername = $this->getAccountName($recordAccID);
-		$recordHasDiscord = $this->hasDiscord($recordAccID);
-		$recordFormattedUsername = $recordHasDiscord ? "<@".$recordHasDiscord.">" : "**".$recordUsername."**";
-		$creatorAccID = $level['extID'];
-		$creatorUsername = $this->getAccountName($creatorAccID);
-		$creatorHasDiscord = $this->hasDiscord($creatorAccID);
-		$creatorFormattedUsername = $creatorHasDiscord ? "<@".$creatorHasDiscord.">" : "**".$creatorUsername."**";
-		$setColor = $pendingColor;
-		$setTitle = $this->webhookLanguage('demonlistTitle', $webhookLangArray);
-		$setDescription = sprintf($this->webhookLanguage('demonlistDesc', $webhookLangArray), $recordFormattedUsername, '**'.$level['levelName'].'**', $demonlistLink.'/approve.php?str='.$record['auth']);
-		$recordField = [$this->webhookLanguage('levelTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername), true];
-		$authorField = [$this->webhookLanguage('recordAuthorTitle', $webhookLangArray), $recordFormattedUsername, true];
-		if($record['atts'] == 1) $action = 0; elseif(($record['atts'] < 5 AND $record['atts'] != 0) AND !($record['atts'] > 9 AND $record['atts'] < 20)) $action = 1; else $action = 2;
-		$attemptsField = [$this->webhookLanguage('recordAttemptsTitle', $webhookLangArray), sprintf($this->webhookLanguage('recordAttemptsDesc'.$action, $webhookLangArray), $record['atts']), true];
-		$proofField = [$this->webhookLanguage('recordProofTitle', $webhookLangArray), "https://youtu.be/".$record['ytlink'], true];
-		$setThumbnail = $demonlistThumbnailURL;
-		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
-		$dw->newMessage()
-		->setContent($dlsubmitNotificationText)
-		->setAuthor($gdps, $authorURL, $authorIconURL)
-		->setColor($setColor)
-		->setTitle($setTitle, $rateTitleURL)
-		->setDescription($setDescription)
-		->setThumbnail($setThumbnail)
-		->addFields($recordField, $authorField, $attemptsField, $proofField)
-		->setFooter($setFooter, $footerIconURL)
-		->setTimestamp()
-		->send();
-	}
-	public function sendDemonlistResultWebhook($modAccID, $recordID) {
-		include __DIR__."/connection.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
-		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($recordID) OR !in_array("demonlist", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
-		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
-		$dw = new DiscordWebhook($dlWebhook);
-		$record = $db->prepare('SELECT * FROM dlsubmits WHERE ID = :ID');
-		$record->execute([':ID' => $recordID]);
-		$record = $record->fetch();
-		if(!$record) return false;
-		$level = $db->prepare('SELECT * FROM levels WHERE levelID = :ID');
-		$level->execute([':ID' => $record['levelID']]);
-		$level = $level->fetch();
-		if(!$level) return false;
-		$modUsername = $this->getAccountName($modAccID);
-		$modHasDiscord = $this->hasDiscord($modAccID);
-		$modFormattedUsername = $modHasDiscord ? "<@".$modHasDiscord.">" : "**".$modUsername."**";
-		$recordAccID = $record['accountID'];
-		$recordUsername = $this->getAccountName($recordAccID);
-		$recordHasDiscord = $this->hasDiscord($recordAccID);
-		$recordFormattedUsername = $recordHasDiscord ? "<@".$recordHasDiscord.">" : "**".$recordUsername."**";
-		$creatorAccID = $level['extID'];
-		$creatorUsername = $this->getAccountName($creatorAccID);
-		$creatorHasDiscord = $this->hasDiscord($creatorAccID);
-		$creatorFormattedUsername = $creatorHasDiscord ? "<@".$creatorHasDiscord.">" : "**".$creatorUsername."**";
-		if($record['approve'] == '1') {
-			$setColor = $successColor;
-			$setTitle = $this->webhookLanguage('demonlistApproveTitle', $webhookLangArray);
-			$dmTitle = $this->webhookLanguage('demonlistApproveTitleDM', $webhookLangArray);
-			$setDescription = sprintf($this->webhookLanguage('demonlistApproveDesc', $webhookLangArray), $modFormattedUsername, $recordFormattedUsername, '**'.$level['levelName'].'**');
-			$dmDescription = sprintf($this->webhookLanguage('demonlistApproveDescDM', $webhookLangArray), $modFormattedUsername, '**'.$level['levelName'].'**');
-		} else {
-			$setColor = $failColor;
-			$setTitle = $this->webhookLanguage('demonlistDenyTitle', $webhookLangArray);
-			$dmTitle = $this->webhookLanguage('demonlistDenyTitleDM', $webhookLangArray);
-			$setDescription = sprintf($this->webhookLanguage('demonlistDenyDesc', $webhookLangArray), $modFormattedUsername, $recordFormattedUsername, '**'.$level['levelName'].'**');
-			$dmDescription = sprintf($this->webhookLanguage('demonlistDenyDescDM', $webhookLangArray), $modFormattedUsername, '**'.$level['levelName'].'**');
-		}
-		$recordField = [$this->webhookLanguage('levelTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername), true];
-		$authorField = [$this->webhookLanguage('recordAuthorTitle', $webhookLangArray), $recordFormattedUsername, true];
-		if($record['atts'] == 1) $action = 0; elseif(($record['atts'] < 5 AND $record['atts'] != 0) AND !($record['atts'] > 9 AND $record['atts'] < 20)) $action = 1; else $action = 2;
-		$attemptsField = [$this->webhookLanguage('recordAttemptsTitle', $webhookLangArray), sprintf($this->webhookLanguage('recordAttemptsDesc'.$action, $webhookLangArray), $record['atts']), true];
-		$proofField = [$this->webhookLanguage('recordProofTitle', $webhookLangArray), "https://youtu.be/".$record['ytlink'], true];
-		$setThumbnail = $demonlistThumbnailURL;
-		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
-		$dw->newMessage()
-		->setContent($dlresultNotificationText)
-		->setAuthor($gdps, $authorURL, $authorIconURL)
-		->setColor($setColor)
-		->setTitle($setTitle, $demonlistTitleURL)
-		->setDescription($setDescription)
-		->setThumbnail($setThumbnail)
-		->addFields($recordField, $authorField, $attemptsField, $proofField)
-		->setFooter($setFooter, $footerIconURL)
-		->setTimestamp()
-		->send();
-		if($dmNotifications && $recordHasDiscord) {
-			$embed = $this->generateEmbedArray(
-				[$gdps, $authorURL, $authorIconURL],
-				$setColor,
-				[$dmTitle, $demonlistTitleURL],
-				$dmDescription,
-				$setThumbnail,
-				[$recordField, $authorField, $attemptsField, $proofField],
-				[$setFooter, $footerIconURL]
-			);
-			$json = json_encode([
-				"content" => "",
-				"tts" => false,
-				"embeds" => [$embed]
-			], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-			$this->sendDiscordPM($recordHasDiscord, $json, true);
-		}
-	}
-	public function sendBanWebhook($modAccID, $playerAccID, $type) {
-		include __DIR__."/connection.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
-		if(!$webhooksEnabled OR !is_numeric($modAccID) OR !is_numeric($playerAccID) OR !in_array("ban", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
-		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
-		$dw = new DiscordWebhook($banWebhook);
-		$user = $db->prepare('SELECT * FROM users WHERE extID = :ID');
-		$user->execute([':ID' => $playerAccID]);
-		$user = $user->fetch();
-		if(!$user) return false;
-		$modUsername = $this->getAccountName($modAccID);
-		$modHasDiscord = $this->hasDiscord($modAccID);
-		$modFormattedUsername = $modHasDiscord ? "<@".$modHasDiscord.">" : "**".$modUsername."**";
-		$playerUsername = $this->getAccountName($playerAccID);
-		$playerHasDiscord = $this->hasDiscord($playerAccID);
-		$playerFormattedUsername = $playerHasDiscord ? "<@".$playerHasDiscord.">" : "**".$playerUsername."**";
-		switch($type) {
-			case 'isBanned':
-				if($user['isBanned']) {
-					$setColor = $failColor;
-					$setTitle = $this->webhookLanguage('playerBanTitle', $webhookLangArray);
-					$dmTitle = $this->webhookLanguage('playerBanTitleDM', $webhookLangArray);
-					$setDescription = sprintf($this->webhookLanguage('playerBanTopDesc', $webhookLangArray), $modFormattedUsername, $playerFormattedUsername);
-					$dmDescription = sprintf($this->webhookLanguage('playerBanTopDescDM', $webhookLangArray), $modFormattedUsername);
-					$setThumbnail = $banThumbnailURL;
-					$setFooter = sprintf($this->webhookLanguage('footerBan', $webhookLangArray), $gdps);
-				} else {
-					$setColor = $successColor;
-					$setTitle = $this->webhookLanguage('playerUnbanTitle', $webhookLangArray);
-					$dmTitle = $this->webhookLanguage('playerUnbanTitleDM', $webhookLangArray);
-					$setDescription = sprintf($this->webhookLanguage('playerUnbanTopDesc', $webhookLangArray), $modFormattedUsername, $playerFormattedUsername);
-					$dmDescription = sprintf($this->webhookLanguage('playerUnbanTopDescDM', $webhookLangArray), $modFormattedUsername);
-					$setThumbnail = $unbanThumbnailURL;
-					$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
-				}
-				break;
-			case 'isCreatorBanned':
-				if($user['isCreatorBanned']) {
-					$setColor = $failColor;
-					$setTitle = $this->webhookLanguage('playerBanTitle', $webhookLangArray);
-					$dmTitle = $this->webhookLanguage('playerBanTitleDM', $webhookLangArray);
-					$setDescription = sprintf($this->webhookLanguage('playerBanCreatorDesc', $webhookLangArray), $modFormattedUsername, $playerFormattedUsername);
-					$dmDescription = sprintf($this->webhookLanguage('playerBanCreatorDescDM', $webhookLangArray), $modFormattedUsername);
-					$setThumbnail = $banThumbnailURL;
-					$setFooter = sprintf($this->webhookLanguage('footerBan', $webhookLangArray), $gdps);
-				} else {
-					$setColor = $successColor;
-					$setTitle = $this->webhookLanguage('playerUnbanTitle', $webhookLangArray);
-					$dmTitle = $this->webhookLanguage('playerUnbanTitleDM', $webhookLangArray);
-					$setDescription = sprintf($this->webhookLanguage('playerUnbanCreatorDesc', $webhookLangArray), $modFormattedUsername, $playerFormattedUsername);
-					$dmDescription = sprintf($this->webhookLanguage('playerUnbanCreatorDescDM', $webhookLangArray), $modFormattedUsername);
-					$setThumbnail = $unbanThumbnailURL;
-					$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
-				}
-				break;
-			case 'isUploadBanned':
-				if($user['isUploadBanned']) {
-					$setColor = $failColor;
-					$setTitle = $this->webhookLanguage('playerBanTitle', $webhookLangArray);
-					$dmTitle = $this->webhookLanguage('playerBanTitleDM', $webhookLangArray);
-					$setDescription = sprintf($this->webhookLanguage('playerBanUploadDesc', $webhookLangArray), $modFormattedUsername, $playerFormattedUsername);
-					$dmDescription = sprintf($this->webhookLanguage('playerBanUploadDescDM', $webhookLangArray), $modFormattedUsername);
-					$setThumbnail = $banThumbnailURL;
-					$setFooter = sprintf($this->webhookLanguage('footerBan', $webhookLangArray), $gdps);
-				} else {
-					$setColor = $successColor;
-					$setTitle = $this->webhookLanguage('playerUnbanTitle', $webhookLangArray);
-					$dmTitle = $this->webhookLanguage('playerUnbanTitleDM', $webhookLangArray);
-					$setDescription = sprintf($this->webhookLanguage('playerUnbanUploadDesc', $webhookLangArray), $modFormattedUsername, $playerFormattedUsername);
-					$dmDescription = sprintf($this->webhookLanguage('playerUnbanUploadDescDM', $webhookLangArray), $modFormattedUsername);
-					$setThumbnail = $unbanThumbnailURL;
-					$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
-				}
-				break;
-			case 'isCommentBanned':
-				if($user['isCommentBanned']) {
-					$setColor = $failColor;
-					$setTitle = $this->webhookLanguage('playerBanTitle', $webhookLangArray);
-					$dmTitle = $this->webhookLanguage('playerBanTitleDM', $webhookLangArray);
-					$setDescription = sprintf($this->webhookLanguage('playerBanCommentDesc', $webhookLangArray), $modFormattedUsername, $playerFormattedUsername);
-					$dmDescription = sprintf($this->webhookLanguage('playerBanCommentDescDM', $webhookLangArray), $modFormattedUsername);
-					$setThumbnail = $banThumbnailURL;
-					$setFooter = sprintf($this->webhookLanguage('footerBan', $webhookLangArray), $gdps);
-				} else {
-					$setColor = $successColor;
-					$setTitle = $this->webhookLanguage('playerUnbanTitle', $webhookLangArray);
-					$dmTitle = $this->webhookLanguage('playerUnbanTitleDM', $webhookLangArray);
-					$setDescription = sprintf($this->webhookLanguage('playerUnbanCommentDesc', $webhookLangArray), $modFormattedUsername, $playerFormattedUsername);
-					$dmDescription = sprintf($this->webhookLanguage('playerUnbanCommentDescDM', $webhookLangArray), $modFormattedUsername);
-					$setThumbnail = $unbanThumbnailURL;
-					$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
-				}
-				break;
-		}
-		$modField = [$this->webhookLanguage('playerModTitle', $webhookLangArray), $modFormattedUsername, true];
-		$reasonField = [$this->webhookLanguage('playerReasonTitle', $webhookLangArray), $user['banReason'] != 'none' ? $user['banReason'] : $this->webhookLanguage('playerBanReason', $webhookLangArray), true];
-		$dw->newMessage()
-		->setContent($banNotificationText)
-		->setAuthor($gdps, $authorURL, $authorIconURL)
-		->setColor($setColor)
-		->setTitle($setTitle, $demonlistTitleURL)
-		->setDescription($setDescription)
-		->setThumbnail($setThumbnail)
-		->addFields($modField, $reasonField)
-		->setFooter($setFooter, $footerIconURL)
-		->setTimestamp()
-		->send();
-		if($dmNotifications && $playerHasDiscord) {
-			$embed = $this->generateEmbedArray(
-				[$gdps, $authorURL, $authorIconURL],
-				$setColor,
-				[$dmTitle, $demonlistTitleURL],
-				$dmDescription,
-				$setThumbnail,
-				[$modField, $reasonField],
-				[$setFooter, $footerIconURL]
-			);
-			$json = json_encode([
-				"content" => "",
-				"tts" => false,
-				"embeds" => [$embed]
-			], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-			$this->sendDiscordPM($playerHasDiscord, $json, true);
-		}
-	}
-	public function sendDailyWebhook($levelID, $type) {
-		include __DIR__."/connection.php";
-		include __DIR__."/../../config/dashboard.php";
-		include __DIR__."/../../config/discord.php";
-		if(!$webhooksEnabled OR !is_numeric($levelID) OR !is_numeric($type) OR !in_array("daily", $webhooksToEnable)) return false;
-		include_once __DIR__."/../../config/webhooks/DiscordWebhook.php";
-		$webhookLangArray = $this->webhookStartLanguage($webhookLanguage);
-		$dw = new DiscordWebhook($dailyWebhook);
-		$level = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
-		$level->execute([':levelID' => $levelID]);
-		$level = $level->fetch();
-		if(!$level) return false;
-		$daily = $db->prepare('SELECT * FROM dailyfeatures WHERE levelID = :levelID AND type = :type');
-		$daily->execute([':levelID' => $levelID, ':type' => $type]);
-		$daily = $daily->fetch();
-		if(!$daily) return false;
-		$creatorAccID = $level['extID'];
-		$creatorUsername = $this->getAccountName($creatorAccID);
-		$creatorHasDiscord = $this->hasDiscord($creatorAccID);
-		$creatorFormattedUsername = $creatorHasDiscord ? "<@".$creatorHasDiscord.">" : "**".$creatorUsername."**";
-		$difficulty = $this->getDifficulty($level['starDifficulty'], $level['starAuto'], $level['starDemon'], $level['starDemonDiff']);
-		$starsIcon = 'stars';
-		$diffIcon = 'na';
-		switch(true) {
-			case ($level['starEpic'] > 0):
-				$starsArray = ['', 'epic', 'legendary', 'mythic'];
-				$starsIcon = $starsArray[$level['starEpic']];
-				break;
-			case ($level['starFeatured'] > 0):
-				$starsIcon = 'featured';
-				break;
-		}
-		$diffArray = ['n/a' => 'na', 'auto' => 'auto', 'easy' => 'easy', 'normal' => 'normal', 'hard' => 'hard', 'harder' => 'harder', 'insane' => 'insane', 'demon' => 'demon-hard', 'easy demon' => 'demon-easy', 'medium demon' => 'demon-medium', 'hard demon' => 'demon-hard', 'insane demon' => 'demon-insane', 'extreme demon' => 'demon-extreme'];
-		$diffIcon = $diffArray[strtolower($difficulty)] ?? 'na';
-		switch($type) {
-			case 0:
-				$setColor = $dailyColor;
-				$setTitle = $this->webhookLanguage('dailyTitle', $webhookLangArray);
-				$dmTitle = $this->webhookLanguage('dailyTitleDM', $webhookLangArray);
-				$setDescription = $this->webhookLanguage('dailyDesc', $webhookLangArray);
-				$dmDescription = sprintf($this->webhookLanguage('dailyDescDM', $webhookLangArray), $tadaEmoji);
-				$setNotificationText = $dailyNotificationText;
-				break;
-			case 1:
-				$setColor = $weeklyColor;
-				$setTitle = $this->webhookLanguage('weeklyTitle', $webhookLangArray);
-				$dmTitle = $this->webhookLanguage('weeklyTitleDM', $webhookLangArray);
-				$setDescription = $this->webhookLanguage('weeklyDesc', $webhookLangArray);
-				$dmDescription = sprintf($this->webhookLanguage('weeklyDescDM', $webhookLangArray), $tadaEmoji);
-				$setNotificationText = $weeklyNotificationText;
-				break;
-			case 2:
-				$setColor = $eventColor;
-				$setTitle = $this->webhookLanguage('eventTitle', $webhookLangArray);
-				$dmTitle = $this->webhookLanguage('eventDM', $webhookLangArray);
-				$setDescription = $this->webhookLanguage('eventDesc', $webhookLangArray);
-				$dmDescription = sprintf($this->webhookLanguage('eventDescDM', $webhookLangArray), $tadaEmoji);
-				$setNotificationText = $eventNotificationText;
-				break;
-		}
-		$stats = $downloadEmoji.' '.$level['downloads'].' | '.($level['likes'] - $level['dislikes'] >= 0 ? $likeEmoji.' '.abs($level['likes'] - $level['dislikes']) : $dislikeEmoji.' '.abs($level['likes'] - $level['dislikes']));
-		$levelField = [$this->webhookLanguage('levelTitle', $webhookLangArray), sprintf($this->webhookLanguage('levelDesc', $webhookLangArray), '**'.$level['levelName'].'**', $creatorFormattedUsername), true];
-		$IDField = [$this->webhookLanguage('levelIDTitle', $webhookLangArray), $level['levelID'], true];
-		if($level['starStars'] == 1) $action = 0; elseif(($level['starStars'] < 5 AND $level['starStars'] != 0) AND !($level['starStars'] > 9 AND $level['starStars'] < 20)) $action = 1; else $action = 2;
-		$difficultyField = [$this->webhookLanguage('difficultyTitle', $webhookLangArray), sprintf($this->webhookLanguage('difficultyDesc' . ($level['levelLength'] == 5 ? 'Moon' : '') . $action, $webhookLangArray), $difficulty, $level['starStars']), true];
-		$statsField = [$this->webhookLanguage('statsTitle', $webhookLangArray), $stats, true];
-		if($level['requestedStars'] == 1) $action = 0; elseif(($level['requestedStars'] < 5 AND $level['requestedStars'] != 0) AND !($level['requestedStars'] > 9 AND $level['requestedStars'] < 20)) $action = 1; else $action = 2;
-		$requestedField = $level['requestedStars'] > 0 ? [$this->webhookLanguage('requestedTitle', $webhookLangArray), sprintf($this->webhookLanguage('requestedDesc' . ($level['levelLength'] == 5 ? 'Moon' : '') . $action, $webhookLangArray), $level['requestedStars']), true] : [];
-		$descriptionField = [$this->webhookLanguage('descTitle', $webhookLangArray), (!empty($level['levelDesc']) ? base64_decode($level['levelDesc']) : $this->webhookLanguage('descDesc', $webhookLangArray)), false];
-		$setThumbnail = $difficultiesURL.$starsIcon.'/'.$diffIcon.'.png';
-		$setFooter = sprintf($this->webhookLanguage('footer', $webhookLangArray), $gdps);
-		$dw->newMessage()
-		->setContent($setNotificationText)
-		->setAuthor($gdps, $authorURL, $authorIconURL)
-		->setColor($setColor)
-		->setTitle($setTitle, $rateTitleURL)
-		->setDescription($setDescription)
-		->setThumbnail($setThumbnail)
-		->addFields($levelField, $IDField, $difficultyField, $statsField, $requestedField, $descriptionField)
-		->setFooter($setFooter, $footerIconURL)
-		->setTimestamp()
-		->send(); 
-		if($dmNotifications && $creatorHasDiscord) {
-			$embed = $this->generateEmbedArray(
-				[$gdps, $authorURL, $authorIconURL],
-				$setColor,
-				[$dmTitle, $rateTitleURL],
-				$dmDescription,
-				$setThumbnail,
-				[$levelField, $IDField, $difficultyField, $statsField, $requestedField, $descriptionField],
-				[$setFooter, $footerIconURL]
-			);
-			$json = json_encode([
-				"content" => "",
-				"tts" => false,
-				"embeds" => [$embed]
-			], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-			$this->sendDiscordPM($creatorHasDiscord, $json, true);
-		}
-	}
-  	public function mail($mail = '', $user = '', $isForgotPass = false) {
+	public function mail($mail = '', $user = '', $isForgotPass = false) {
 		if(empty($mail) OR empty($user)) return;
 		include __DIR__."/../../config/mail.php";
 		if($mailEnabled) {
@@ -1864,17 +1274,30 @@ class mainLib {
 				$string = $this->randomString(4);
 				$query = $db->prepare("UPDATE accounts SET mail = :mail WHERE userName = :user");
 				$query->execute([':mail' => $string, ':user' => $user]);
-				$m->Subject = 'Confirm link';
-				$m->Body = '<h1 align=center>Hello, <b>'.$user.'</b>!</h1><br>
-				<h2 align=center>It seems, that you wanna register new account in <b>'.$gdps.'</b></h2><br>
-				<h2 align=center>Here is your link!</h2><br>
-				<h1 align=center>'.dirname('https://'.$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI']).'/activate.php?mail='.$string.'</h1>';
+				$m->Subject = 'Email Verification';
+				$m->Body = '<div style="background:#f9f9f9; text-align:center; padding:22px">
+				<a href=https://unnamedgdps.ps.fhgdps.com/dashboard/> <img width="400" src="https://unnamedgdps.ps.fhgdps.com/incl/lib/banner.png"> </a></div>
+				<h1 style="color:rgba(0,0,0,.9); padding-top:14px">👋 Hi, '.$user.'!</h1>
+				<p style="font-size:18px; color:rgba(0,0,0,.65); margin-bottom:6px">Thank you for signing up in <b>'.$gdps.'</b></p>
+				<p style="font-size:18px; color:rgba(0,0,0,.65); margin-top:0px">Please verify your email by clicking the link below</p>
+				<h2 style="padding-top:28px; padding-bottom:36px" align=center><a style="background-color:#69cd00; color:white; padding:15px 25px; text-decoration:none; border-radius:10px" href='.dirname('https://'.$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI']).'/activate.php?mail='.$string.'> Verify Email </a></h2>
+				<p style="font-size:1px; border-top:1px solid #dcddde; width:100%"></p>
+				<p style="color:rgba(0,0,0,.45)">Need help? <a href=https://discord.gg/g2WUStyurp>Join our Discord server</a> to find support!<br>
+				Mark email as "Not spam" if links don\'t works</p>
+				<p style="margin:0px; font-size:0px; color:rgba(0,0,0,0)">Dashboard outgoing message</p>';
 			} else {
-				$m->Subject = 'Forgot password?';
-				$m->Body = '<h1 align=center>Hello, <b>'.$user.'</b>!</h1><br>
-				<h2 align=center>It seems, that you forgot your password in <b>'.$gdps.'</b>...</h2><br>
-				<h2 align=center>Here is your link!</h2><br>
-				<h1 align=center>https://'.$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI'].'?code='.$isForgotPass.'</h1>';
+				$m->Subject = 'Change Password Request';
+				$m->Body = '<div style="background:#f9f9f9; text-align:center; padding:22px">
+				<a href=https://unnamedgdps.ps.fhgdps.com/dashboard/> <img width="400" src="https://unnamedgdps.ps.fhgdps.com/incl/lib/banner.png"> </a></div>
+				<h1 style="color:rgba(0,0,0,.9); padding-top:14px">👋 Hi, '.$user.'!</h1>
+				<p style="font-size:18px; color:rgba(0,0,0,.65); margin-bottom:6px">It seems that you forgot your password in <b>'.$gdps.'</b>...</p>
+				<p style="font-size:18px; color:rgba(0,0,0,.65); margin:0px">Click the link below to change your account password</p>
+				<p style="font-size:14px; color:rgba(255,0,0,.65); margin-bottom:0px" align=center>If you didn\'t request a password change, please ignore this email</p>
+				<h2 style="padding-top:28px; padding-bottom:36px" align=center><a style="background-color:#69cd00; color:white; padding:15px 25px; text-decoration:none; border-radius:10px" href=https://'.$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI'].'?code='.$isForgotPass.'> Change Password </a></h2>
+				<p style="font-size:1px; border-top:1px solid #dcddde; width:100%"></p>
+				<p style="color:rgba(0,0,0,.45)">Need help? <a href=https://discord.gg/g2WUStyurp>Join our Discord server</a> to find support!<br>
+				Mark email as "Not spam" if links don\'t work</p>
+				<p style="margin:0px; font-size:0px; color:rgba(0,0,0,0)">Dashboard outgoing message</p>';
 			}
 			return $m->send();
 		}

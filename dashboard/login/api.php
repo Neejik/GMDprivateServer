@@ -10,7 +10,7 @@ include "../".$dbPath."config/mail.php";
 require "../".$dbPath."incl/lib/generatePass.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-if(isset($_POST["userName"]) AND isset($_POST["password"])){
+if(isset($_POST["userName"]) AND isset($_POST["password"])) {
 	$userName = $_POST["userName"];
 	$password = $_POST["password"];
 	$valid = GeneratePass::isValidUsrname($userName, $password);

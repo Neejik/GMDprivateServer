@@ -237,7 +237,7 @@ $(document).on("keyup keypress change keydown",function(){
                 btn.classList.remove("btn-size");
                 btn.classList.add("btn-song");
 	}
-})</script>', 'mod');
+</script>', 'mod');
 }
 } else
 	$dl->printSong('<div class="form">

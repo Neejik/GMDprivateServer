@@ -24,14 +24,14 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])) {
             if($mailEnabled) $dl->printSong('<div class="form">
             <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
             <form class="form__inner" action="" method="post">
-            <p>'.$dl->getLocalizedString("didntActivatedEmail").'</p><br>
+            <p>'.$dl->getLocalizedString("didntActivatedEmail").'</p>
             <button type="button" onclick="a(\'login/login.php\', true, false, \'GET\')" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
             </form>
             </div>');
 			else $dl->printSong('<div class="form">
             <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
             <form class="form__inner" action="" method="post">
-            <p><a href="login/activate.php">'.$dl->getLocalizedString("activateDesc").'</a></p><br>
+            <p><a href="login/activate.php">'.$dl->getLocalizedString("activateDesc").'</a></p>
             <button type="button" onclick="a(\'login/login.php\', true, false, \'GET\')" class="btn btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
             </form>
             </div>');

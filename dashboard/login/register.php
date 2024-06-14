@@ -8,13 +8,15 @@ include "../".$dbPath."incl/lib/connection.php";
 require "../".$dbPath."incl/lib/exploitPatch.php";
 require "../".$dbPath."incl/lib/generatePass.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
+require_once "../../incl/lib/TimeoutCheck.php";
 $gs = new mainLib();
 $dl = new dashboardLib();
 $dl->title($dl->getLocalizedString("registerAcc"));
 $dl->printFooter('../');
 if(!isset($_SESSION["accountID"]) OR $_SESSION["accountID"] == 0) {
-if(!isset($preactivateAccounts)) $preactivateAccounts = false;
-if(!isset($filterUsernames)) global $filterUsernames;
+if(!isset($preactivateAccounts)){
+	$preactivateAccounts = false;
+}
 // here begins the checks
 if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["repeatemail"]) AND !empty($_POST["password"]) AND !empty($_POST["repeatpassword"])){
 	if(!Captcha::validateCaptcha()) {
@@ -31,39 +33,6 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 	$repeat_password = $_POST["repeatpassword"];
 	$email = ExploitPatch::rucharclean($_POST["email"]);
 	$repeat_email = ExploitPatch::rucharclean($_POST["repeatemail"]);
-	if($filterUsernames >= 1) {
-		$bannedUsernamesList = array_map('strtolower', $bannedUsernames);
-		switch($filterUsernames) {
-			case 1:
-				if(in_array(strtolower($userName), $bannedUsernamesList)) exit($dl->printSong('<div class="form">
-					<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-					<form class="form__inner" method="post" action="">
-					<p>'.$dl->getLocalizedString("badUsername").'</p>
-					<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-					</form>
-				</div>'));
-				break;
-			case 2:
-				foreach($bannedUsernamesList as $bannedUsername) {
-					if(!empty($bannedUsername) && mb_strpos(strtolower($username), $bannedUsername) !== false) exit($dl->printSong('<div class="form">
-					<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-					<form class="form__inner" method="post" action="">
-					<p>'.$dl->getLocalizedString("badUsername").'</p>
-					<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-					</form>
-				</div>'));
-				}
-		}
-	}
-	if(strpos($userName, ' ') !== false) {
-		exit($dl->printSong('<div class="form">
-			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
-			<form class="form__inner" method="post" action="">
-			<p>'.$dl->getLocalizedString("badUsername").'</p>
-			<button type="submit" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
-			</form>
-		</div>'));
-	}
 	if(strlen($username) < 3) {
 		exit($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -82,7 +51,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 			</form>
 		</div>'));
 	}
-	if(strlen($password) < 6) {
+	if(strlen($password) < 8) {
 		exit($dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 			<form class="form__inner" method="post" action="">
@@ -132,6 +101,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 					</form>
 				</div>'));
 				}
+				TimeoutCheck::CheckTimeout(-705);
 				$hashpass = password_hash($password, PASSWORD_DEFAULT);
 				$gjp2 = GeneratePass::GJP2hash($password);
 				$query2 = $db->prepare("INSERT INTO accounts (userName, password, email, registerDate, isActive, gjp2)
@@ -221,7 +191,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
 	<form class="form__inner" method="post" action=".">
 	<p>'.$dl->getLocalizedString("loginAlready").'</p>
-	    <button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
+	<button type="submit" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
     </form>
 </div>');
 }

@@ -2,23 +2,21 @@
 include_once "../incl/lib/connection.php";
 include_once "../incl/lib/mainLib.php";
 include "../config/dashboard.php";
-require "../config/proxy.php";
 $gs = new mainLib();
 $file = trim(basename($_GET['request']));
+$type = explode('.', $file);
+$type = $type[count($type)-1];
 switch($file) {
 	case 'musiclibrary.dat': 
-	case 'musiclibrary_02.dat': 
-		$datFile = isset($_GET['dashboard']) ? 'standalone.dat' : 'gdps.dat';
-		if(!file_exists($datFile)) {
+		if(!file_exists('gdps.dat')) {
 			$time = $db->prepare('SELECT reuploadTime FROM songs WHERE reuploadTime > 0 ORDER BY reuploadTime DESC LIMIT 1');
 			$time->execute();
 			$time = $time->fetchColumn();
 			$gs->updateLibraries($_GET['token'], $_GET['expires'], $time, 1);
 		}
-		echo file_get_contents($datFile);
+		echo file_get_contents('gdps.dat');
 		break;
 	case 'musiclibrary_version.txt': 
-	case 'musiclibrary_version_02.txt': 
 		$time = $db->prepare('SELECT reuploadTime FROM songs WHERE reuploadTime > 0 ORDER BY reuploadTime DESC LIMIT 1');
 		$time->execute();
 		$time = $time->fetchColumn();
@@ -33,6 +31,10 @@ switch($file) {
 		echo $times[0];
 		break;
 	default:
+		if(!isset($_GET['token'])) {
+			$_GET['token'] = $gs->randomString(11);
+			$_GET['expires'] = time() + 3600;
+		}
 		$servers = [];
 		foreach($customLibrary AS $library) {
 			$servers[$library[0]] = $library[2];
@@ -44,11 +46,17 @@ switch($file) {
 			$gs->updateLibraries($_GET['token'], $_GET['expires'], $time, 1);
 		}
 		$musicID = explode('.', $file)[0];
-		$song = $gs->getLibrarySongInfo($musicID, true);
-		if($song) $url = urldecode($song['download']);
-		else $url = urldecode($gs->getSongInfo($musicID, 'download'));
-		if(empty($url)) header("Location: https://www.newgrounds.com/audio/listen/$musicID");
-		header("Location: $url");
+		$music = json_decode(file_get_contents('ids.json'), true)['IDs'][$musicID];
+		if(empty($music)) $url = $gs->getSongInfo($musicID, 'download');
+		elseif($servers[$music[0]] === null) $url = $gs->getSongInfo($music[1], 'download');
+		else $url = $servers[$music[0]].'/music/'.$music[1].'.ogg?token='.$_GET['token'].'&expires='.$_GET['expires'];
+		$curl = curl_init($url);
+		curl_setopt_array($curl, [
+			CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+			CURLOPT_RETURNTRANSFER => 1
+		]);
+		echo curl_exec($curl);
+		curl_close($curl);
 		break;
 }
 ?>

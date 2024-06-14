@@ -79,9 +79,17 @@ foreach($result as &$action){
 		if($claninfo["clanOwner"] == $action["accountID"]) $own = '<i style="color:#ffff91" class="fa-solid fa-crown"></i>';
 		$clan = '<span style="display:contents;cursor:pointer"><h2 class="music" style="width: max-content;margin-left: 5px;grid-gap:5px;color:#'.$claninfo["color"].'">'.$claninfo["clan"].$own.'</h2></span>';
 	}
-	$stats = $dl->createProfileStats($action['stars'], $action['moons'], $action['diamonds'], $action['coins'], $action['userCoins'], $action['demons'], $action['creatorPoints'], $action['isCreatorBanned']);
+	if($action["stars"] == 0) $st = ''; else $st = '<p class="profilepic">'.$action["stars"].' <i class="fa-solid fa-star"></i></p>';
+	if($action["moons"] == 0) $ms = ''; else $ms = '<p class="profilepic">'.$action["moons"].' <i class="fa-solid fa-moon"></i></p>';
+    if($action["diamonds"] == 0) $dm = ''; else $dm = ' <p class="profilepic">'.$action["diamonds"].' <i class="fa-solid fa-gem"></i></p>';
+    if($action["coins"] == 0) $gc = ''; else $gc = '<p class="profilepic">'.$action["coins"].' <i class="fa-solid fa-coins" style="color:#ffffbb"></i></p>';
+    if($action["userCoins"] == 0) $uc = ''; else $uc = '<p class="profilepic">'.$action["userCoins"].' <i class="fa-solid fa-coins"></i></p>';
+    if($action["demons"] == 0) $dn = ''; else $dn = '<p class="profilepic">'.$action["demons"].' <i class="fa-solid fa-dragon"></i></p>';
+    if($action["creatorPoints"] == 0) $cp = ''; else $cp = '<p class="profilepic">'.$action["creatorPoints"].' <i class="fa-solid fa-screwdriver-wrench"></i></p>';
+    $stats = $st.$ms.$dm.$gc.$uc.$dn.$cp;
+    if(empty($stats)) $stats = '<p style="font-size:25px;color:#212529">'.$dl->getLocalizedString("empty").'</p>';
 	$registerDate = date("d.m.Y", $action["registerDate"]);
-	if($action['userName'] == "Undefined") $action['userName'] = $gs->getUserName($accUserID);
+	if($action['userName'] == "Undefined") $action['userName'] = $gs->getUserName($action['userID']);
 	$members .= '<div style="width: 100%;display: flex;flex-wrap: wrap;justify-content: center;">
 			<div class="profile"><div style="display: flex;width: 100%;justify-content: space-between;margin-bottom: 7px;align-items: center;"><button style="display:contents;cursor:pointer" type="button" onclick="a(\'profile/'.$action["userName"].'\', true, true, \'GET\')"><div class="acclistdiv">
 				<h2 style="color:rgb('.$gs->getAccountCommentColor($action["accountID"]).');" class="profilenick acclistnick">'.$action["userName"].' '.$clan.'</h2><h2 class="accresultrole">'.$resultRole.'</h2>

@@ -22,6 +22,7 @@ class dashboardLib {
 						<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit="no">';
           	if($isSubdirectory) echo '<base href="../">'; else echo '<base href=".">';
 				echo '<script src="incl/jq.js"></script>
+                          <script src="https://kit.fontawesome.com/10e18026cb.js" crossorigin="anonymous"></script>
                           <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
                           <script async src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
                           <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
@@ -33,7 +34,7 @@ class dashboardLib {
 						  <link href="incl/fontawesome/css/regular.css" rel="stylesheet">
                           <link async rel="stylesheet" href="incl/cvolton.css?'.$css.'">
 						  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-                          <title>'.$gdps.'</title>';
+                          <title>'.$gdps.' Dashboard</title>';
 		echo '</head>
 				<body><div style="height: 100%;display: contents;">';
 	}
@@ -84,8 +85,8 @@ class dashboardLib {
       	global $youtube;
       	global $twitch;
 		echo '<div class="footer">'.$this->getLocalizedString("footer").'<div>';
-        if($youtube != '') echo '<a href="'.$youtube.'" target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/youtube.png"></a>';
-        if($discord != '') echo '<a href="'.$discord.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/discord.png"></a>';
+        if($youtube != '') echo '<a href="'.$youtube.'" target="_blank"><img class="socials" style="width: 35px" src="'.$sub.'incl/socials/youtube.png"></a>';
+        if($discord != '') echo '<a href="'.$discord.'"target="_blank"><img class="socials" style="width: 35px" src="'.$sub.'incl/socials/discord.png"></a>';
       	if($twitter != '') echo '<a href="'.$twitter.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/twitter.png"></a>';
       	if($vk != '') echo '<a href="'.$vk.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/vk.png"></a>';
       	if($twitch != '') echo '<a href="'.$twitch.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/twitch.png"></a>';
@@ -155,7 +156,7 @@ class dashboardLib {
 				break;
 		}
 		echo '<nav id="navbarepta" class="navbar navbar-expand-lg navbar-dark menubar">
-			<button href="." onclick="a(\'\')" class="navbar-brand" style="margin-right:0.5rem;background:none;border:none"><img style="width:30px" src="icon.png"></button>
+			<button href="." onclick="a(\'\')" class="navbar-brand" style="margin-right:0.5rem;background:none;border:none"><img style="width:30px" src="icon.gif"></button>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -178,8 +179,8 @@ class dashboardLib {
 							<a type="button" href="stats/listsTable.php" onclick="a(\'stats/listsTable.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-list-ul" aria-hidden="false"></i></div>'.$this->getLocalizedString("listTable").'</a>
 							<a type="button" href="stats/songList.php" onclick="a(\'stats/songList.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-music" aria-hidden="false"></i></div>'.$this->getLocalizedString("songs").'</a>
 							<a type="button" href="stats/SFXList.php" onclick="a(\'stats/SFXList.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-drum" aria-hidden="false"></i></div>'.$this->getLocalizedString("sfxs").'</a>
-							<a type="button" href="demonlist" onclick="a(\'demonlist\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-dragon" aria-hidden="false"></i></div>'.$this->getLocalizedString("demonlist").'</a>';
-							if($clansEnabled) $browse .= '<a type="button" href="clans" onclick="a(\'clans\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-dungeon" aria-hidden="false"></i></div>'.$this->getLocalizedString("clans").'</a>';
+							<a type="button" href="demonlist" onclick="a(\'demonlist\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-dragon" aria-hidden="false"></i></div>'.$this->getLocalizedString("demonlist").'</a>
+							<a type="button" href="clans" onclick="a(\'clans\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-dungeon" aria-hidden="false"></i></div>'.$this->getLocalizedString("clans").'</a>';
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0) {
 			echo '<li class="nav-item dropdown '.$accountActive.' ">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -207,7 +208,7 @@ class dashboardLib {
                                 <a type="button" href="levels/levelToGD.php" onclick="a(\'levels/levelToGD.php\')"class="dropdown-item"><i class="fa-solid fa-arrow-up" style="position: absolute;font-size: 10px;margin: 5px 5px 5px -5px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-cloud" aria-hidden="false"></i></div>'.$this->getLocalizedString("levelToGD").'</a>';
           				echo '<button type="button" class="dropdown-item" id="crbtn" onclick="cron(), event.stopPropagation();"><div class="icon"><i id="iconcron" class="fa-solid fa-bars-progress"></i></div>'.$this->getLocalizedString('tryCron').'</button>
                         <script>
-								function cron() {
+								function cron(){
 									cr = new XMLHttpRequest();
                                     cr.open("GET", "'.$dbPath.'tools/cron/cron.php", true);
                                     var ic = document.getElementById("iconcron");
@@ -246,8 +247,9 @@ class dashboardLib {
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 							<a type="button" href="stats/leaderboardsBan.php" onclick="a(\'stats/leaderboardsBan.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-ban"></i></div>'.$this->getLocalizedString("leaderboardBan").'</a>';
-							if($gs->checkPermission($_SESSION["accountID"], "dashboardLevelPackCreate")) echo '<a type="button" href="levels/packCreate.php" onclick="a(\'levels/packCreate.php\')"class="dropdown-item"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-regular fa-folder-open" style="margin-left: 2px;" aria-hidden="false"></i></div>'.$this->getLocalizedString("packManage").'</a>';
-							if($gs->checkPermission($_SESSION["accountID"], "dashboardGauntletCreate")) echo '<a type="button" href="levels/gauntletCreate.php" onclick="a(\'levels/gauntletCreate.php\')"class="dropdown-item"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-globe" aria-hidden="false"></i></div>'.$this->getLocalizedString("gauntletManage").'</a>';
+							if($gs->checkPermission($_SESSION["accountID"], "dashboardLevelPackCreate")) {
+								echo '<a type="button" href="levels/packCreate.php" onclick="a(\'levels/packCreate.php\')"class="dropdown-item"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-regular fa-folder-open" style="margin-left: 2px;" aria-hidden="false"></i></div>'.$this->getLocalizedString("packManage").'</a>
+							<a type="button" href="levels/gauntletCreate.php" onclick="a(\'levels/gauntletCreate.php\')"class="dropdown-item"><i class="fa-solid fa-plus" style="position: absolute;font-size: 10px;margin: 3px 5px 5px -3px;" aria-hidden="false"></i><div class="icon"><i class="fa-solid fa-globe" aria-hidden="false"></i></div>'.$this->getLocalizedString("gauntletManage").'</a>';}
 							echo '<a type="button" href="stats/unlistedMod.php" onclick="a(\'stats/unlistedMod.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-list-ul" aria-hidden="false"></i></div>'.$this->getLocalizedString("unlistedMod").'</a>
 							<a type="button" href="stats/suggestList.php" onclick="a(\'stats/suggestList.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-list" aria-hidden="false"></i></div>'.$this->getLocalizedString("suggestLevels").'</a>
 							<a type="button" href="stats/listsTableMod.php" onclick="a(\'stats/listsTableMod.php\')"class="dropdown-item"><div class="icon"><i class="fa-solid fa-list-ul" aria-hidden="false"></i></div>'.$this->getLocalizedString("listTableMod").'</a>';
@@ -299,12 +301,12 @@ class dashboardLib {
 							<i class="fa-solid fa-language" aria-hidden="true"></i> '.$this->getLocalizedString("language").'
 						</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=RU"><div class="icon flag"><img class="imgflag" src="incl/flags/ru.png?2"></div>Русский</a>
 							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=EN"><div class="icon flag"><img class="imgflag" src="incl/flags/us.png?2"></div>English</a>
+							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=ES" title="Translated by Nejik"><div class="icon flag"><img class="imgflag" src="incl/flags/es.png?2"></div>Español</a>
+							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=FR" title="Translated by masckmaster2007"><div class="icon flag"><img class="imgflag" src="incl/flags/fr.png?2"></div>Français</a>
+							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=RU"><div class="icon flag"><img class="imgflag" src="incl/flags/ru.png?2"></div>Русский</a>
 							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=TR" title="Translated by EMREOYUN"><div class="icon flag"><img class="imgflag" src="incl/flags/tr.png?2"></div>Türkçe</a>
                             <a class="dropdown-item dontblock" href="lang/switchLang.php?lang=UA" title="Translated by Jamichi"><div class="icon flag"><img class="imgflag" src="incl/flags/ua.png?2"></div>Українська</a>
-                            <a class="dropdown-item dontblock" href="lang/switchLang.php?lang=FR" title="Translated by masckmaster2007 and M336"><div class="icon flag"><img class="imgflag" src="incl/flags/fr.png?2"></div>Français</a>
-                            <a class="dropdown-item dontblock" href="lang/switchLang.php?lang=ES" title="Translated by Nejik"><div class="icon flag"><img class="imgflag" src="incl/flags/es.png?2"></div>Español</a>
 						</div>';
 						if(!empty(glob("../download/".$gdps.".*")) OR !empty(glob("download/".$gdps.".*")) OR !empty($pc) OR !empty($mac) OR !empty($android) OR !empty($ios)) {
 							echo '
@@ -356,7 +358,7 @@ class dashboardLib {
 			$userName = $gs->getAccountName($_SESSION["accountID"]);
 			echo'<li class="nav-item dropdown '.$profileActive.'">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<i class="fa-solid fa-user-circle" aria-hidden="true"></i> '.$userName.'
+							<i class="fa-solid fa-user-circle" aria-hidden="true"></i> '.sprintf($this->getLocalizedString("loginHeader"), $userName).'
 						</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
 							<a type="button" href="profile/'.$userName.'" onclick="a(\'profile/'.$userName.'\')" class="dropdown-item"><div class="icon"><i class="fa-regular fa-id-badge"></i></div>'.$this->getLocalizedString("profile").'</a>';
@@ -712,7 +714,7 @@ class dashboardLib {
 			</script>
 		</div>
 <script>
-	if(document.querySelector("[alt=\'www.000webhost.com\']") != null) document.querySelector("[alt=\'www.000webhost.com\']").parentElement.parentElement.style = "z-index: 0;position: fixed;bottom: 0px;"
+	if(document.querySelector("[alt=\'www.000webhost.com\']") != null) document.querySelector("[alt=\'www.000webhost.com\']").parentElement.parentElement.remove();
 	cptch = document.querySelector("#verycoolcaptcha");
 	$(document).click(function(event) {
 		if(event.target && !event.target.classList.contains("dontblock") && (event.target.classList.contains("dropdown-item") || event.target.classList.contains("icon") || event.target.classList.contains("nav-link") || event.target.classList.contains("fa-solid") || event.target.classList.contains("fa-regular"))) event.preventDefault();
@@ -820,6 +822,7 @@ class dashboardLib {
 							document.body.appendChild(base);
 							if(typeof document.querySelectorAll("base")[1] == "object") document.querySelectorAll("base")[0].remove();
 						}
+						'.($enableCaptcha ? '
 						try {
 							if(typeof captchascript != "undefined") {
 								var elems = document.querySelectorAll("div[aria-hidden=true]");
@@ -835,7 +838,7 @@ class dashboardLib {
 									if(typeof hcaptcha == "object") hcaptcha.render("coolcaptcha");
 								}
 							}
-						} catch(e) {}
+						} catch(e) {}' : '').'
 					} else {
 						document.getElementById("loadingloool").innerHTML = \'<i class="fa-solid fa-xmark" style="color:#ffb1ab;padding: 0px 8px;"></i>\';
 						setTimeout(function () {document.getElementById("loadingloool").style.opacity = "0";}, 1000);
@@ -940,26 +943,10 @@ class dashboardLib {
 	public function convertToDate($timestamp, $acc = false){
 		if($acc) {
 			if($timestamp == 0) return $this->getLocalizedString("never");
-			if(date("d.m.Y", $timestamp) == date("d.m.Y", time())) return date("G:i", $timestamp);
-			elseif(date("Y", $timestamp) == date("Y", time())) return date("d.m", $timestamp);
-			else return date("d.m.Y", $timestamp);
-		} else return date("d.m.Y G:i:s", $timestamp);
-	}
-	public function createProfileStats($stars = 0, $moons = 0, $diamonds = 0, $goldCoins = 0, $userCoins = 0, $demons = 0, $creatorPoints = 0, $isCreatorBanned, $returnText = true) {
-		if($stars == 0) $st = ''; else $st = '<p class="profilepic">'.$stars.' <i class="fa-solid fa-star" style="color:#ffff88"></i></p>';
-		if($moons == 0) $ms = ''; else $ms = '<p class="profilepic">'.$moons.' <i class="fa-solid fa-moon" style="color:#80abff"></i></p>';
-		if($diamonds == 0) $dm = ''; else $dm = ' <p class="profilepic">'.$diamonds.' <i class="fa-solid fa-gem" style="color:#a6fffb"></i></p>';
-		if($goldCoins == 0) $gc = ''; else $gc = '<p class="profilepic">'.$goldCoins.' <i class="fa-solid fa-coins" style="color:#fffd6b"></i></p>';
-		if($userCoins == 0) $uc = ''; else $uc = '<p class="profilepic">'.$userCoins.' <i class="fa-solid fa-coins"></i></p>';
-		if($demons == 0) $dn = ''; else $dn = '<p class="profilepic">'.$demons.' <i class="fa-solid fa-dragon" style="color:#ffbbbb"></i></p>';
-		if($isCreatorBanned == 1) {
-			$banhaha = 'style="text-decoration:line-through;color:#432529"';
-			$creatorban = 'style="text-decoration: line-through"';
-		} else $banhaha = $creatorban = '';
-		if($creatorPoints == 0) $cp = ''; else $cp = '<p class="profilepic" '.$banhaha.'>'.$creatorPoints.' <i class="fa-solid fa-screwdriver-wrench" '.$creatorban.'></i></p>';
-		$all = $st.$ms.$dm.$gc.$uc.$dn.$cp;
-		if(empty($all) && $returnText) $all = '<p style="font-size:25px;color:#212529">'.$this->getLocalizedString("empty").'</p>';
-		return $all;
+			if(date("d.m.Y", $timestamp) == date("d.m.Y", time())) return "Today at ".date("G:i", $timestamp);
+			elseif(date("Y", $timestamp) == date("Y", time())) return date("d/m", $timestamp);
+			else return date("d/m/Y", $timestamp);
+		} else return date("d/m/Y G:i:s", $timestamp);
 	}
 	public function generateBottomRow($pagecount, $actualpage){
 		$pageminus = $actualpage - 1;
@@ -1042,7 +1029,7 @@ class dashboardLib {
 	}
 	public function title($title) {
       	global $gdps;
-		echo '<title>'.$title.' | '.$gdps.'</title>';
+		echo '<title>UGDPS Dashboard | '.$title.'</title>';
 	}
 }
 ?>

@@ -38,7 +38,7 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 	else {
 		if($_FILES['filename']['size'] == 0) $db_fid = -6;
 		else {
-			if($_FILES['filename']['size'] >= $sfxSize * 1024 * 1024) $db_fid = -5;
+			if($_FILES['filename']['size'] >= $SFXsize * 1024 * 1024) $db_fid = -5;
 			else {
 				$time = time();
 				$length = 10;
@@ -70,7 +70,7 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 							<h2 style="margin: 0px;font-size: '.$fontsize.'px;margin-left:5px;display: flex;align-items: center;" class="profilenick">'.$author.' — '.$name.$btn.'</h2>
 						</div></div>
 						<div class="form-control" style="display: flex;width: 97.5%;height: max-content;align-items: center;">'.$stats.'</div>
-						<div style="display: flex;justify-content: space-between;margin-top: 10px;"><h3 id="comments" class="songidyeah" style="margin: 0px;width: max-content;">SFX ID: <b>'.$songIDlol.'</b></h3><h3 id="comments" class="songidyeah" style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$dl->getLocalizedString("date").': <b>'.$time.'</b></h3></div>
+						<div style="display: flex;justify-content: space-between;margin-top: 10px;"><h3 id="comments" class="songidyeah" style="margin: 0px;width: max-content;">SFX ID: <b>'.$songIDlol.'</b></h3><h3 id="comments" class="songidyeah" style="justify-content: flex-end;grid-gap: 0.5vh;margin: 0px;width: max-content;">'.$dl->getLocalizedString("date").': <b>'.$time.'</b></h3></div>
 					</div></div>';
 			}
 		}			
@@ -148,7 +148,7 @@ if($_FILES && $_FILES['filename']['error'] == UPLOAD_ERR_OK) {
 				sn = document.getElementById("songnamelol");
 				const upload = document.getElementById("labelupload");
 				const btn = document.getElementById("submit");
-				if(file.size > '.$sfxSize * 1024 * 1024 .') {
+				if(file.size > '.$SFXsize * 1024 * 1024 .') {
 					sn.innerHTML = "'.$dl->getLocalizedString("sfxAddError-5").'";
 					upload.classList.add("btn-size");
 					btn.disabled = true;

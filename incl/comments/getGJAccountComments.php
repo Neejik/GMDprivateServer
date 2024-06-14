@@ -1,9 +1,9 @@
 <?php
 chdir(dirname(__FILE__));
+//error_reporting(0);
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
-require_once "../../config/misc.php";
 $gs = new mainLib();
 $commentstring = "";
 $accountid = ExploitPatch::remove($_POST["accountID"]);
@@ -22,18 +22,38 @@ $countquery->execute([':userID' => $userID]);
 $commentcount = $countquery->fetchColumn();
 foreach($result as &$comment1) {
 	if($comment1["commentID"]!=""){
-      	$uploadDate = $gs->makeTime($comment1["timestamp"]);
-		$likes = $comment1["likes"]; // - $comment1["dislikes"];
+      	/*if(time() - 86400 > $comment1["timestamp"] OR date('d', $comment1["timestamp"]) < date('d', time())) $uploadDate = date("d.m.Y", $comment1["timestamp"]);
+		else $uploadDate = date("G:i", $comment1["timestamp"]);*/
+	    switch(date("G", $comment1["timestamp"])) {
+	        case date("G", $comment1["timestamp"]) == 12 && 0: // midnight
+	            $timeFormat = " AM";
+	            if(date('d/m/Y', $comment1["timestamp"]) == date('d/m/Y', time())) $dateFormat = "Today at ".date(("G:i"), $comment1["timestamp"]);
+	            elseif(date('d/m/Y', $comment1["timestamp"]) == date('d/m/Y', time() - 86400)) $dateFormat = "Yesterday at ".date(("G:i"), $comment1["timestamp"]);
+	            else $dateFormat = date(("d/m/Y G:i"), $comment1["timestamp"]);
+	            break;
+	        case date("G", $comment1["timestamp"]) > 11: // evening
+	            $timeFormat = " PM";
+	            if(date('d/m/Y', $comment1["timestamp"]) == date('d/m/Y', time())) $dateFormat = "Today at ".date(("G:i"), $comment1["timestamp"]);
+	            elseif(date('d/m/Y', $comment1["timestamp"]) == date('d/m/Y', time() - 86400)) $dateFormat = "Yesterday at ".date(("G:i"), $comment1["timestamp"]);
+	            else $dateFormat = date(("d/m/Y G:i"), $comment1["timestamp"]);
+	            break;
+	        case date("G", $comment1["timestamp"]) <= 11: // morning
+	            $timeFormat = " AM";
+	            if(date('d/m/Y', $comment1["timestamp"]) == date('d/m/Y', time())) $dateFormat = "Today at ".date(("G:i"), $comment1["timestamp"]);
+	            elseif(date('d/m/Y', $comment1["timestamp"]) == date('d/m/Y', time() - 86400)) $dateFormat = "Yesterday at ".date(("G:i"), $comment1["timestamp"]);
+	            else $dateFormat = date(("d/m/Y G:i"), $comment1["timestamp"]);
+	            break;
+	    }
+	    $uploadDate = $dateFormat.$timeFormat."\n(".$gs->makeTime($comment1["timestamp"])." ago)";
 		$reply = $db->prepare("SELECT count(*) FROM replies WHERE commentID = :id");
 		$reply->execute([':id' => $comment1["commentID"]]);
 		$reply = $reply->fetchColumn();
 		if($reply > 0) {
 			$rep = $reply > 1 ? 'replies)' : 'reply)';
-			$comment1["comment"] = base64_encode(base64_decode($comment1["comment"]).' ('.$reply.' '.$rep);
+			$comment1["comment"] = base64_decode($comment1["comment"]);
+			$comment1["comment"] = base64_encode($comment1["comment"].' ('.$reply.' '.$rep);
 		}
-		$comment1['comment'] = base64_encode(trim(ExploitPatch::rutoen(base64_decode($comment1['comment']))));
-		if($enableCommentLengthLimiter) $comment1['comment'] = base64_encode(substr(base64_decode($comment1['comment']), 0, $maxAccountCommentLength));
-		$commentstring .= "2~".$comment1["comment"]."~3~".$comment1["userID"]."~4~".$likes."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."|";
+		$commentstring .= "2~".$comment1["comment"]."~3~".$comment1["userID"]."~4~".$comment1["likes"]."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."|";
 	}
 }
 $commentstring = substr($commentstring, 0, -1);
