@@ -7,6 +7,7 @@ $gs = new mainLib();
 $dl->title($dl->getLocalizedString("listTable"));
 $dl->printFooter('../');
 include "../".$dbPath."incl/lib/connection.php";
+include "../".$dbPath."incl/lib/exploitPatch.php";
 $x = 1;
 $packtable = "";
 $query = $db->prepare("SELECT * FROM lists WHERE unlisted = 0 ORDER BY listID DESC");
@@ -26,16 +27,16 @@ $modcheck = $gs->checkPermission($_SESSION["accountID"], "dashboardModTools");
 foreach($result as &$pack){
 	$lvlarray = explode(",", $pack["listlevels"]);
 	$lvltable = "";
-	$listDesc = htmlspecialchars(base64_decode($pack['listDesc']));
+	$listDesc = htmlspecialchars(ExploitPatch::url_base64_decode($pack['listDesc']));
 	if(empty($listDesc)) $listDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
     $starspack = $pack["starStars"];
     if($pack["starStars"] == 0) $starspack = '<span style="color:grey">0</span>';
   	$coinspack = $pack["countForReward"];
-	$pst = '<p class="profilepic"><i class="fa-solid fa-gem"></i> '.$starspack.'</p>';
+	$pst = '<p class="profilepic"><i class="fa-solid fa-gem" style="color:#a6fffb"></i> '.$starspack.'</p>';
 	if($pack["countForReward"] != 0) $pcc =  '<p class="profilepic"><i class="fa-solid fa-circle-check"></i> '.$coinspack.'</p>'; else $pcc = '';
 	$pd = '<p class="profilepic"><i class="fa-solid fa-face-smile-beam"></i> '.$gs->getListDiffName($pack['starDifficulty']).'</p>';
-	$lk = '<p class="profilepic"><i class="fa-solid fa-thumbs-'.($pack['likes'] - $pack['dislikes'] > 0 ? 'up' : 'down').'"></i> '.abs($pack['likes'] - $pack['dislikes']).'</p>';
-	$dload = '<p class="profilepic"><i class="fa-solid fa-reply fa-rotate-270"></i> '.$pack['downloads'].'</p>';
+	$lk = '<p class="profilepic"><i class="fa-solid fa-thumbs-'.($pack['likes'] - $pack['dislikes'] >= 0 ? 'up' : 'down').'"></i> '.abs($pack['likes'] - $pack['dislikes']).'</p>';
+	$dload = '<p class="profilepic"><i class="fa-solid fa-reply fa-rotate-270" style="color: #afff9b;"></i> '.$pack['downloads'].'</p>';
 	$packall = $dload.$lk.$pst.$pd.$pcc;
 	foreach($lvlarray as &$lvl) {
 		$query = $db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
@@ -44,7 +45,7 @@ foreach($result as &$pack){
 		$levelid = $action["levelID"];
 		$levelname = $action["levelName"];
 		$levelIDlol = '<button id="copy'.$action["levelID"].'" class="accbtn songidyeah" onclick="copysong('.$action["levelID"].')">'.$action["levelID"].'</button>';
-		$levelDesc = htmlspecialchars(base64_decode($action["levelDesc"]));
+		$levelDesc = htmlspecialchars(ExploitPatch::url_base64_decode($action["levelDesc"]));
 		if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
 		$levelpass = $action["password"];
 		$likes = $action["likes"] > 0 ? $action["likes"] : '<span style="color:gray">'.$action["likes"].'</span>';

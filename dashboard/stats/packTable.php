@@ -7,6 +7,7 @@ $gs = new mainLib();
 $dl->title($dl->getLocalizedString("packTable"));
 $dl->printFooter('../');
 include "../".$dbPath."incl/lib/connection.php";
+include "../".$dbPath."incl/lib/exploitPatch.php";
 $x = 1;
 $packtable = "";
 $query = $db->prepare("SELECT * FROM mappacks ORDER BY ID ASC");
@@ -31,7 +32,7 @@ foreach($result as &$pack){
     if($pack["stars"] == 0) $starspack = '<span style="color:grey">0</span>';
   	$coinspack = $pack["coins"];
     if($pack["coins"] == 0) $coinspack = '<span style="color:grey">0</span>';
-	$pst = '<p class="profilepic"><i class="fa-solid fa-star"></i> '.$starspack.'</p>';
+	$pst = '<p class="profilepic"><i class="fa-solid fa-star" style="color:#ffff88"></i> '.$starspack.'</p>';
 	$pcc =  '<p class="profilepic"><i class="fa-solid fa-coins"></i> '.$coinspack.'</p>';
 	$diffarray = ['Auto', 'Easy', 'Normal', 'Hard', 'Harder', 'Insane', 'Demon'];
 	$pd = '<p class="profilepic"><i class="fa-solid fa-face-smile-beam"></i> '.$diffarray[$pack['difficulty']].'</p>';
@@ -43,7 +44,7 @@ foreach($result as &$pack){
 		$levelid = $action["levelID"];
 		$levelname = $action["levelName"];
 		$levelIDlol = '<button id="copy'.$action["levelID"].'" class="accbtn songidyeah" onclick="copysong('.$action["levelID"].')">'.$action["levelID"].'</button>';
-		$levelDesc = htmlspecialchars(base64_decode($action["levelDesc"]));
+		$levelDesc = htmlspecialchars(ExploitPatch::url_base64_decode($action["levelDesc"]));
 		if(empty($levelDesc)) $levelDesc = '<text style="color:gray">'.$dl->getLocalizedString("noDesc").'</text>';
 		$levelpass = $action["password"];
 		$likes = $action["likes"];

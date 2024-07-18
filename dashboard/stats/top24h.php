@@ -16,7 +16,30 @@ if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$actualpage = 1;
 }
 $time = time() - 86400;
-$query = $db->prepare("SELECT users.extID, SUM(actions.value) AS stars, users.userName FROM actions INNER JOIN users ON actions.account = users.userID WHERE type = '9' AND timestamp > :time AND users.isBanned = 0 AND actions.value > 0 GROUP BY (stars) DESC ORDER BY stars DESC LIMIT 10 OFFSET $page");
+$bans = $gs->getAllBansOfBanType(0);
+$extIDs = $userIDs = $bannedIPs = [];
+foreach($bans AS &$ban) {
+	switch($ban['personType']) {
+		case 0:
+			$extIDs[] = $ban['person'];
+			break;
+		case 1:
+			$userIDs[] = $ban['person'];
+			break;
+		case 2:
+			$bannedIPs[] = $gs->IPForBan($ban['person'], true);
+			break;
+	}
+}
+$extIDsString = "'".implode("','", $extIDs)."'";
+$userIDsString = "'".implode("','", $userIDs)."'";
+$bannedIPsString = implode("|", $bannedIPs);
+$queryArray = [];
+if($extIDsString != '') $queryArray[] = "users.extID NOT IN (".$extIDsString.")";
+if($userIDsString != '') $queryArray[] = "users.userID NOT IN (".$userIDsString.")";
+if(!empty($bannedIPsString)) $queryArray[] = "users.IP NOT REGEXP '".$bannedIPsString."'";
+$queryText = !empty($queryArray) ? '('.implode(' AND ', $queryArray).') AND' : '';
+$query = $db->prepare("SELECT users.extID, SUM(actions.value) AS stars, users.userName FROM actions INNER JOIN users ON actions.account = users.userID WHERE type = '9' AND timestamp > :time AND ".$queryText." actions.value > 0 GROUP BY (stars) DESC ORDER BY stars DESC LIMIT 10 OFFSET $page");
 $query->execute([':time' => $time]);
 $result = $query->fetchAll();
 $x = $page + 1;
@@ -37,14 +60,14 @@ foreach($result as &$action){
 	if($strs == 1) $star = 0; elseif($strs < 5 AND $strs != 0 AND ($stars > 20 OR $stars < 10)) $star = 1; else $star = 2;
 	$coin = $db->prepare("SELECT SUM(coins) FROM levelscores WHERE accountID = :id AND uploadDate > :time");
 	$coin->execute([':id' => $userid, ':time' => $time]);
-	$coins = $coin->fetch();
-	if(empty($coins["SUM(coins)"])) $coins["SUM(coins)"] = 0;
-	$cns = $coins[strlen($coins["SUM(coins)"])-1];
+	$coins = $coin->fetchColumn();
+	if(empty($coins)) $coins = 0;
+	$cns = $coins[strlen($coins)-1];
   	if($cns == 1) $lvl = 0; elseif($cns < 5 AND $cns > 0 AND ($cns > 20 OR $cns < 10)) $lvl = 1; else $lvl = 2;
 	if(empty($action["userCoins"])) $action["userCoins"] = 0;
 	$st = '<p class="profilepic">'.$action["stars"].' <i class="fa-solid fa-star"></i></p>';
 	$uc = '<p class="profilepic">'.$action["userCoins"].' <i class="fa-solid fa-coins"></i></p>';
-	$stats = $st.$uc;
+	$stats = $dl->createProfileStats($action["stars"], 0, 0, 0, $action['userCoins'], 0, 0, 0);
 	switch($x) {
 		case 1:
 			$place = '<i class="fa-solid fa-trophy" style="color:#ffd700; margin-right: 5px;"> 1</i>';

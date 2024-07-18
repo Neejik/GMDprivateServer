@@ -42,6 +42,7 @@ $string["settings"] = "Налаштування";
 $string["allowMessagesFrom"] = "Дозволяти повідомлення від...";
 $string["allowFriendReqsFrom"] = "Дозволяти заявки в друзі від...";
 $string["showCommentHistory"] = "Показувати історію коментарів...";
+$string["timezoneChoose"] = "Выберите часовой пояс";
 $string["yourYouTube"] = "Ваш канал на YouTube";
 $string["yourVK"] = "Ваша сторінка в ВКонтакте";
 $string["yourTwitter"] = "Ваша сторінка в Twitter";
@@ -114,7 +115,8 @@ $string["passDontMatch"] = "Паролі не співпадають!";
 $string["emailDontMatch"] = "Пошти не співпадають!";
 $string["registered"] = "Ви успішно зареєстрували акаунт!";
 $string["bigNick"] = "Нікнейм занадто длинный!";
-$string["mailExists"] = "На этой почте уже зарегистрирован аккаунт!";
+$string["mailExists"] = "На цій пошті вже зареєстровано аккаунт!";
+$string["badUsername"] = "Пожалуйста, выберите другой никнейм.";
 
 $string["changePassTitle"] = "Зміна пароля";
 $string["changedPass"] = "Пароль успішно змінений! Вам потрібно заново ввійти в ваш акаунт.";
@@ -199,6 +201,7 @@ $string["levelAlreadyReuploaded"] = "Рівень вже перенесений!
 $string["server"] = "Сервер";
 $string["levelID"] = "ID рівня";
 $string["pageDisabled"] = "Ця сторінка відключена!";
+$string["levelUploadBanned"] = "Вам запрещена загрузка уровней на сервер!";
 
 $string["activateAccount"] = "Активація акаунта";
 $string["activateDesc"] = "Активуйте свій акаунт!";
@@ -318,6 +321,7 @@ $string["clanOwner"] = "Творець клану";
 $string["noClanDesc"] = "<i>У клану немає опису</i>";
 $string["noClan"] = "Такого клану не існує!";
 $string["clanName"] = "Назва клану";
+$string["clanTag"] = "Тег клану (3-5 символів)";
 $string["clanDesc"] = "Опис клану";
 $string["clanColor"] = "Колір клану";
 $string["dangerZone"] = "Небезпечна зона";
@@ -350,35 +354,49 @@ $string["createdClan"] = "Ви успішно створили клан <span st
 $string["createClanDesc"] = "Тут ви можете створити клан!";
 $string["create"] = "Створити";
 $string["mainSettings"] = "Основні налаштування";
-$string["takenClanName"] = "Данное название клана уже занято!";
+$string["takenClanName"] = "Ця назва клану вже зайнята!";
+$string["takenClanTag"] = "Цей тег клану вже зайнятий!";
 
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> запропонував оцінити </text><text class="levelname">%2$s</text><text class="dltext"> на <b>%4$s%3$s</b></text>';
 $string["reportedName"] = '%1$s<text class="dltext"> зарепортили</text><text class="levelname">%2$s</text>';
 
-$string['listTable'] = "Списки уровней";
-$string['listTableMod'] = "Скрытые списки уровней";
-$string['listTableYour'] = "Ваши cкрытые списки уровней";
+$string['listTable'] = "Списки рівнів";
+$string['listTableMod'] = "Сховані переліки рівнів";
+$string['listTableYour'] = "Ваші cховані переліки рівнів";
 
-$string['forgotPasswordChangeTitle'] = "Изменить пароль";
-$string["successfullyChangedPass"] = "Пароль успешно сменён!";
-$string['forgotPasswordTitle'] = "Забыли пароль?";
-$string['maybeSentAMessage'] = "Мы отправим вам сообщение на почту, если данный аккаунт существует.";
-$string['forgotPasswordDesc'] = "Здесь вы можете запросить ссылку на изменение пароля, если его забыли!";
-$string['forgotPasswordButton'] = "Запросить ссылку";
+$string['forgotPasswordChangeTitle'] = "Змінити пароль";
+$string["successfullyChangedPass"] = "Пароль успішно змінений!";
+$string['forgotPasswordTitle'] = "Забули пароль?";
+$string['maybeSentAMessage'] = "Ми відправим вам повідомлення на пошту, якщо цей аккаунт існує.";
+$string['forgotPasswordDesc'] = "Тут ви можете запитати посилання на змінення паролю, якщо його забули!";
+$string['forgotPasswordButton'] = "Запитати посилання";
 
-$string['sfxAdd'] = "Добавить звуковой эффект";
-$string["sfxAddError-5"] = "Звуковой эффект весит больше $SFXsize мегабайт!";
-$string["sfxAddError-6"] = "Что-то случилось при загрузке звукового эффекта!";
-$string["sfxAddError-7"] = "Загружать можно только аудиофайлы!";
-$string['sfxAdded'] = 'Звуковой эффект загружен';
-$string['yourNewSFX'] = "Взгляните на ваш новоиспечённый звуковой эффект!";
-$string["sfxAddAnotherBTN"] = "Ещё один эффектик?";
-$string["sfxAddDesc"] = "Здесь вы можете добавить звуковой эффект на сервер!";
-$string["chooseSFX"] = "Выберите звуковой эффект";
-$string["sfxAddNameFieldPlaceholder"] = "Название звукового эффекта";
-$string['sfxs'] = 'Звуковые эффекты';
-$string['sfxID'] = 'ID звукового эффекта';
-$string['manageSFX'] = 'Управление звуковыми эффектами';
+$string['sfxAdd'] = "Додати звуковий ефект";
+$string["sfxAddError-5"] = "Звуковий ефект важить більше $sfxSize мегабайт!";
+$string["sfxAddError-6"] = "Щось сталось при завантаженні звукового ефекта!";
+$string["sfxAddError-7"] = "Завантажувати можна тільки аудіофайли!";
+$string['sfxAdded'] = 'Звуковий ефект завантаженний';
+$string['yourNewSFX'] = "Подивіться на ваш новоспечений звуковий ефект!";
+$string["sfxAddAnotherBTN"] = "Ще один ефектік?";
+$string["sfxAddDesc"] = "Тут ви можете додати звуковий ефект на сервер!";
+$string["chooseSFX"] = "Виберіть звуковий ефект";
+$string["sfxAddNameFieldPlaceholder"] = "Назва звукового ефекта";
+$string['sfxs'] = 'Звукові ефекты';
+$string['sfxID'] = 'ID звукового ефекта';
+$string['manageSFX'] = 'Управління звуковими ефектами';
+
+$string['featureLevel'] = 'Оценить уровень';
+
+$string['banList'] = 'Список заблокированных';
+$string['expires'] = 'Истекает';
+$string['unbanPerson'] = 'Разблокировать';
+$string['IP'] = 'IP адрес';
+$string['noBanInPast'] = 'Вы не можете заблокировать игрока до прошлого!';
+$string['banSuccess'] = 'Вы успешно заблокировали <b>%1$s</b> до <b>%3$s</b> в категории «<b>%2$s</b>»!';
+$string['person'] = 'Пользователь';
+$string['youAreBanned'] = 'Вы были заблокированы до <b>%2$s</b> по причине:<br><b>%1$s</b>';
+$string['banChange'] = 'Изменение';
+$string['system'] = 'Система';
 
 /*
 	REUPLOAD
@@ -482,10 +500,15 @@ $string["rate"] = "Оцінка";
 $string["stats"] = "Статистика";
 $string["suggestFeatured"] = "Featured?";
 $string["whoAdded"] = "Хто додав?";
+$string["moons"] = "Луны";
 //modActionsList
-$string["banDesc"] = "Тут ви можете заблокувати користувача з лідерборду!";
+$string["banDesc"] = "Тут ви можете заблокувати користувача!";
 $string["playerTop"] = 'Топ гравців';
 $string["creatorTop"] = 'Топ строітелів';
+$string["levelUploading"] = 'Загрузка уровней';
+$string["successfullyBanned"] = 'Игрок <b>%1$s</b> с ID аккаунта <b>%2$s</b> был успешно забанен!';
+$string["successfullyUnbanned"] = 'Игрок <b>%1$s</b> с ID аккаунта <b>%2$s</b> был успешно разбанен!';
+$string["commentBan"] = 'Комментирование';
 
 $string["admin"] = "Адміністратор";
 $string["elder"] = "Старший модератор";
@@ -561,14 +584,16 @@ $string["modAction23"] = "Змінив(ла) квест";
 $string["modAction24"] = "Переназначив(ла) ігрока";
 $string["modAction25"] = "Створив(ла) квест";
 $string["modAction26"] = "Змінив(ла) нікнейм/пароль користувачу";
-$string["modAction30"] = "Оценил(а) список уровней";
-$string["modAction31"] = "Отправил(а) на оценку список уровней";
-$string["modAction32"] = "Снял(а)/добавил(а) Featured списку уровней";
-$string["modAction33"] = "Скрыл(а)/открыл(а) список уровней";
-$string["modAction34"] = "Удалил(а) список уровней";
-$string["modAction35"] = "Изменил(а) автора списка уровней";
-$string["modAction36"] = "Изменил(а) название списка уровней";
-$string["modAction37"] = "Изменил(а) описание списка уровней";
+$string["modAction27"] = "Изменил(а) звуковой эффект";
+$string["modAction28"] = "Забанил(а) пользователя";
+$string["modAction30"] = "Оцінив(ла) перелік уровней";
+$string["modAction31"] = "Відправив(ла) на оцінку переліку рівнів";
+$string["modAction32"] = "Зняв(ла)/додав(ла) Featured переліку рівнів";
+$string["modAction33"] = "Приховав(ла)/відкрив(ла) перелік рівнів";
+$string["modAction34"] = "Видалив(ла) перелік рівнів";
+$string["modAction35"] = "Змінив(ла) автора переліку рівнів";
+$string["modAction36"] = "Змінив(ла) назву переліку рівнів";
+$string["modAction37"] = "Змінив(ла) опис переліку рівнів";
 $string["everyActions"] = "Будь-які дії";
 $string["everyMod"] = "Всі модератори";
 $string["Kish!"] = "Киш!";
@@ -576,6 +601,6 @@ $string["noPermission"] = "У вас немає прав!";
 $string["noLogin?"] = "Ви не ввійшли в акаунт!";
 $string["LoginBtn"] = "Ввійти в акаунт";
 $string["dashboard"] = "Панель серверу";
-$string["userID"] = 'ID игрока';
+$string["userID"] = 'ID гравця';
 //errors
 $string["errorNoAccWithPerm"] = "Помилка: акаунтів з правом '%s' не було знайдено";

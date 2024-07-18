@@ -57,7 +57,7 @@ $string["profileOptDesc"] = "View your profile";
 $string["messengerOptDesc"] ="Open messenger";
 $string["addSongOptDesc"] = "Add song to server";
 $string["loginOptDesc"] = "Login to account";
-$string["createAcc"] = "Create account";
+$string["createAcc"] = "Create an account";
 $string["registerOptDesc"] = "Register on %s";
 $string["downloadOptDesc"] = "Download %s";
 
@@ -74,6 +74,7 @@ $string["settings"] = "Settings";
 $string["allowMessagesFrom"] = "Allow messages from...";
 $string["allowFriendReqsFrom"] = "Allow friend requests from...";
 $string["showCommentHistory"] = "Show comments history...";
+$string["timezoneChoose"] = "Choose timezone";
 $string["yourYouTube"] = "Your YouTube channel";
 $string["yourVK"] = "Your page on VK";
 $string["yourTwitter"] = "Your page on Twitter";
@@ -110,7 +111,7 @@ $string["modActionsList"] = "Mod actions";
 $string["modActions"] = "Server moderators";
 $string["gauntletTable"] = "Story Mode";
 $string["packTable"] = "Map Zones";
-$string["leaderboardTime"] = "Leaderboards 24h";
+$string["leaderboardTime"] = "Leaderboard 24h";
 
 $string["download"] = "Download";
 $string["forwindows"] = "For Windows";
@@ -148,15 +149,16 @@ $string["registered"] = "You successfully registered an account!<br>
 <p style='margin:0 0 20px'><a href='login/activate.php'>Activate your account!</a></p>";
 $string["bigNick"] = "Username is too long!";
 $string["mailExists"] = "There is a registered account using this email!";
+$string["badUsername"] = "Please choose another username.";
 
 $string["changePassTitle"] = "Change password";
 $string["changedPass"] = "Password successfully changed! You need to login to you account again.";
 $string["wrongPass"] = "Wrong password!";
 $string["samePass"] = "Passwords you entered are the same!";
 $string["changePassDesc"] = "Here you can change your password!";
-$string["oldPassword"] = "Old password";
-$string["newPassword"] = "New password";
-$string["confirmNew"] = "Confirm password";
+$string["oldPassword"] = "Old password";
+$string["newPassword"] = "New password";
+$string["confirmNew"] = "Confirm password";
 
 $string["forcePassword"] = "Force change password";
 $string["forcePasswordDesc"] = "Here you can force change player's password!";
@@ -177,7 +179,7 @@ $string["newNick"] = " New username";
 $string["password"] = "Password";
 
 $string["packCreate"] = "Create a Map Zone";
-$string["packCreateTitle"] = "Create a Map Zone";
+$string["packCreateTitle"] = "Create a Map Zone with rewards";
 $string["packCreateDesc"] = "Here you can create a Map Zone!";
 $string["packCreateSuccess"] = "You successfully created a Map Zone called";
 $string["packCreateOneMore"] = "Add another Map Zone";
@@ -231,6 +233,7 @@ $string["levelAlreadyReuploaded"] = "Level already reuploaded!";
 $string["server"] = "Server";
 $string["levelID"] = "Level ID";
 $string["pageDisabled"] = "This page is disabled!";
+$string["levelUploadBanned"] = "You're banned from uploading levels!";
 
 $string["activateAccount"] = "Account activation";
 $string["activateDesc"] = "Activate your account!";
@@ -241,18 +244,18 @@ $string["activate"] = "Activate";
 $string["activateDisabled"] = "Account activation is disabled!";
 
 $string["addMod"] = "Add Mod";
-$string["addModDesc"] = "Here you can grant a Moderator!";
+$string["addModDesc"] = "Here you can promote someone to Moderator!";
 $string["modYourself"] = "You can't grant yourself Mod!";
 $string["alreadyMod"] = "This player is already a Moderator!";
-$string["addedMod"] = "You successfully granted Mod to player";
+$string["addedMod"] = "You successfully granted Mod to a player";
 $string["addModOneMore"] = "Add another Mod";
 $string["modAboveYourRole"] = "You\'re trying to give a role above yours!";
 $string["makeNewMod"] = "Make someone Moderator!";
 $string["reassignMod"] = "Reassign Mod";
 $string["reassign"] = "Reassign";
 $string['demotePlayer'] = "Demote player";
-$string['demotedPlayer'] = "You successfully demoted player <b>%s</b>!";
-$string['addedModNew'] = "You successfully granted Mod to player <b>%s</b>!";
+$string['demotedPlayer'] = "You successfully demoted <b>%s</b>!";
+$string['addedModNew'] = "You successfully granted Mod to <b>%s</b>!";
 $string['demoted'] = 'Demoted';
 
 $string["shareCPTitle"] = "Share Creator Points";
@@ -283,7 +286,7 @@ $string["notYourLevel"] = "This is not your level!";
 $string["reuploadFailed"] = "Level transfer error!";
 
 $string["search"] = "Search...";
-$string["searchCancel"] = "Delete filters";
+$string["searchCancel"] = "Cancel search";
 $string["emptySearch"] = "Nothing found!";
 
 $string["demonlist"] = 'Demonlist';
@@ -383,6 +386,7 @@ $string["createClanDesc"] = "Here you can create a team!";
 $string["create"] = "Create";
 $string["mainSettings"] = "Main settings";
 $string["takenClanName"] = "This team name was already taken!";
+$string["takenClanTag"] = "This clan tag was already taken!";
 
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> suggested <b>%4$s%3$s</b> for</text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
 $string["reportedName"] = '%1$s<text class="dltext"> was reported</text><text class="levelname">%2$s</text>';
@@ -394,12 +398,12 @@ $string['listTableYour'] = "Your unlisted lists";
 $string['forgotPasswordChangeTitle'] = "Change password";
 $string["successfullyChangedPass"] = "Password was successfully changed!";
 $string['forgotPasswordTitle'] = "Forgot password?";
-$string['maybeSentAMessage'] = "We'll send you a email if this account exists.";
+$string['maybeSentAMessage'] = "We'll send you an email if this account exists.";
 $string['forgotPasswordDesc'] = "Here you can request change password link if you forgot it!";
 $string['forgotPasswordButton'] = "Request link";
 
 $string['sfxAdd'] = "Add SFX";
-$string["sfxAddError-5"] = "SFX's size is higher than $SFXsize megabytes!";
+$string["sfxAddError-5"] = "SFX's size is higher than $sfxSize megabytes!";
 $string["sfxAddError-6"] = "Something went wrong while uploading SFX!";
 $string["sfxAddError-7"] = "You can only upload audio!";
 $string['sfxAdded'] = 'SFX added';
@@ -411,6 +415,19 @@ $string["sfxAddNameFieldPlaceholder"] = "Name";
 $string['sfxs'] = 'SFXs';
 $string['sfxID'] = 'SFX ID';
 $string['manageSFX'] = 'Manage SFXs';
+
+$string['featureLevel'] = 'Feature level';
+
+$string['banList'] = 'Banned people list';
+$string['expires'] = 'Expires';
+$string['unbanPerson'] = 'Unban';
+$string['IP'] = 'IP-address';
+$string['noBanInPast'] = 'You can\'t ban until past!';
+$string['banSuccess'] = 'You successfully banned <b>%1$s</b> until <b>%3$s</b> in «<b>%2$s</b>»!';
+$string['person'] = 'Person';
+$string['youAreBanned'] = 'You were banned until <b>%2$s</b> for reason:<br><b>%1$s</b>';
+$string['banChange'] = 'Change';
+$string['system'] = 'System';
 
 /*
 	REUPLOAD
@@ -427,7 +444,7 @@ $string["songAddUrlFieldPlaceholder"] = "Song URL";
 $string["songAddNameFieldPlaceholder"] = "Name";
 $string["songAddAuthorFieldPlaceholder"] = "Author";
 $string["songAddButton"] = "Choose song";
-$string["songAddAnotherBTN"] = "Another Song";
+$string["songAddAnotherBTN"] = "Add Another Song";
 $string["songAdded"] = "Song added";
 $string["deletedSong"] = "You successfully deleted song";
 $string["renamedSong"] = "You successfully renamed song to";
@@ -500,7 +517,7 @@ $string["pageInfo"] = "Showing page %s of %s";
 $string["first"] = "First";
 $string["previous"] = "Previous";
 $string["next"] = "Next";
-$string["never"] = "No date";
+$string["never"] = "(No date)";
 $string["last"] = "Last";
 $string["go"] = "Go";
 $string["levelid"] = "Level ID";
@@ -514,10 +531,15 @@ $string["rate"] = "Rate";
 $string["stats"] = "Stats";
 $string["suggestFeatured"] = "Featured?";
 $string["whoAdded"] = "Who added?";
+$string["moons"] = "Moons";
 //modActionsList
-$string["banDesc"] = "Here you can ban a player from leaderboard!";
+$string["banDesc"] = "Here you can ban a player!";
 $string["playerTop"] = 'Top of players';
 $string["creatorTop"] = 'Top of creators';
+$string["levelUploading"] = 'Uploading levels';
+$string["successfullyBanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully banned!';
+$string["successfullyUnbanned"] = 'Player <b>%1$s</b> with account ID <b>%2$s</b> was successfully unbanned!';
+$string["commentBan"] = 'Commenting';
 
 $string["admin"] = "Owner";
 $string["elder"] = "Elder Mod";
@@ -593,6 +615,8 @@ $string["modAction23"] = "Changed quest";
 $string["modAction24"] = "Reassigned a player";
 $string["modAction25"] = "Created a quest";
 $string["modAction26"] = "Changed player's username/password";
+$string["modAction27"] = "Changed SFX";
+$string["modAction28"] = "Banned person";
 $string["modAction30"] = "Rated list";
 $string["modAction31"] = "Sent list";
 $string["modAction32"] = "Un/featured list";

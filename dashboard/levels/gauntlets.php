@@ -8,7 +8,7 @@ include '../'.$dbPath.'incl/lib/Captcha.php';
 $id = ExploitPatch::number($_GET["id"]);
 $gs = new mainLib();
 if(!empty($id)) {
-	if(!empty($_GET["l1"]) AND !empty($_GET["l2"]) AND !empty($_GET["l3"]) AND !empty($_GET["l4"]) AND !empty($_GET["l5"]) AND $gs->checkPermission($_SESSION["accountID"], 'dashboardLevelPackCreate')) {
+	if(!empty($_GET["l1"]) AND !empty($_GET["l2"]) AND !empty($_GET["l3"]) AND !empty($_GET["l4"]) AND !empty($_GET["l5"]) AND $gs->checkPermission($_SESSION["accountID"], 'dashboardGauntletCreate')) {
 		if(!Captcha::validateCaptcha()) {
 			exit(json_encode(['success' => false]));
 		}
@@ -30,7 +30,7 @@ if(!empty($id)) {
 	  $pck = $db->prepare("SELECT * FROM gauntlets WHERE ID = :id");
 	  $pck->execute([':id' => $id]);
 	  $map = $pck->fetch();
-	  echo json_encode(['success' => true, 'ID' => $map['ID'], 'l1' => $map['level1'], 'l2' => $map['level2'], 'l3' => $map['level3'], 'l4' => $map['level4'], 'l5' => $map['level5'], 'name' => $gs->getGauntletName($id)." Dashland"]);
+	  echo json_encode(['success' => true, 'ID' => $map['ID'], 'l1' => $map['level1'], 'l2' => $map['level2'], 'l3' => $map['level3'], 'l4' => $map['level4'], 'l5' => $map['level5'], 'name' => $gs->getGauntletName($id)." Chapter"]);
 	}
 }
 ?>

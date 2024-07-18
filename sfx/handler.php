@@ -2,19 +2,19 @@
 include_once "../incl/lib/connection.php";
 include_once "../incl/lib/mainLib.php";
 include "../config/dashboard.php";
+require "../config/proxy.php";
 $gs = new mainLib();
 $file = trim(basename($_GET['request']));
-$type = explode('.', $file);
-$type = $type[count($type)-1];
 switch($file) {
-	case 'sfxlibrary.dat': 
-		if(!file_exists('gdps.dat')) {
+	case 'sfxlibrary.dat':
+		$datFile = isset($_GET['dashboard']) ? 'standalone.dat' : 'gdps.dat';
+		if(!file_exists($datFile)) {
 			$time = $db->prepare('SELECT reuploadTime FROM sfxs ORDER BY reuploadTime DESC LIMIT 1');
 			$time->execute();
 			$time = $time->fetchColumn();
 			$gs->updateLibraries($_GET['token'], $_GET['expires'], $time, 0);
 		}
-		echo file_get_contents('gdps.dat');
+		echo file_get_contents($datFile);
 		break;
 	case 'sfxlibrary_version.txt': 
 		$time = $db->prepare('SELECT reuploadTime FROM sfxs WHERE reuploadTime > 0 ORDER BY reuploadTime DESC LIMIT 1');
@@ -42,17 +42,9 @@ switch($file) {
 			$time = $time->fetchColumn();
 			$gs->updateLibraries($_GET['token'], $_GET['expires'], $time, 0);
 		}
-		$sfx = json_decode(file_get_contents('ids.json'), true)['IDs'][$sfxID];
-		if(empty($sfx)) exit();
-		if($servers[$sfx[0]] === null) $url = $gs->getSFXInfo($sfx[1], 'download');
-		else $url = $servers[$sfx[0]].'/sfx/s'.$sfx[1].'.ogg?token='.$_GET['token'].'&expires='.$_GET['expires'];
-		$curl = curl_init($url);
-		curl_setopt_array($curl, [
-			CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
-			CURLOPT_RETURNTRANSFER => 1
-		]);
-		echo curl_exec($curl);
-		curl_close($curl);
+		$song = $gs->getLibrarySongInfo($sfxID, 'sfx');
+		$url = urldecode($song['download']);
+		header("Location: $url");
 		break;
 }
 ?>

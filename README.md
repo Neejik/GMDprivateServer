@@ -2,11 +2,11 @@
 ## Geometry Dash Private Server
 Basically a Geometry Dash Server Emulator
 
-Supported version of Geometry Dash: 1.0 - 2.205
+Supported version of Geometry Dash: 1.0 - 2.206
 
 (See [the backwards compatibility section of this article](https://github.com/Cvolton/GMDprivateServer/wiki/Deliberate-differences-from-real-GD) for more information)
 
-Required version of PHP: 5.5+ (tested up to 8.1.2)
+Required version of PHP: 5.5+ (tested up to 8.3)
 
 ### Branches
 - master - This is the main version of the server.
@@ -36,5 +36,13 @@ Image dominant color picker — https://github.com/swaydeng/imgcolr — (dashboa
 Media cover — https://github.com/aadsm/jsmediatags — (dashboard/lib/jsmediatags.js)
 
 Audio duration — https://github.com/JamesHeinrich/getID3 — (config/getid3)
+
+Proxies list — https://github.com/SevenworksDev/proxy-list — (config/proxies.txt)
+
+Common VPNs list — https://github.com/X4BNet/lists_vpn — (config/vpns.txt)
+
+Discord Webhooks — https://github.com/renzbobz/DiscordWebhook-PHP — (config/webhooks/DiscordWebhook.php)
+
+GD icons — https://github.com/oatmealine/gd-icon-renderer-web — (dashboard/profile/index.php)
 
 Most of the stuff in generateHash.php has been figured out by pavlukivan and Italian APK Downloader, so credits to them

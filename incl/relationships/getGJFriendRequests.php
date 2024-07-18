@@ -3,16 +3,14 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/GJPCheck.php";
-require_once "../lib/mainLib.php";
+include_once "../lib/mainLib.php";
 $gs = new mainLib();
 $reqstring = "";
 $getSent = !empty($_POST["getSent"]) ? ExploitPatch::remove($_POST["getSent"]) : 0;
-
 $bcgjp = ($_POST["gameVersion"] > 21) ? $_POST["gjp2"] : $_POST["gjp"]; // Backwards Compatible GJP
 if(empty($_POST["accountID"]) OR (!isset($_POST["page"]) OR !is_numeric($_POST["page"])) OR empty($bcgjp)){
 	exit("-1");
 }
-
 $accountID = GJPCheck::getAccountIDOrDie();
 $page = ExploitPatch::number($_POST["page"]);
 $offset = $page*10;
@@ -40,17 +38,14 @@ foreach($result as &$request) {
 	}else if($getSent == 1){
 		$requester = $request["toAccountID"];
 	}
-	$query = "SELECT userName, userID, icon, color1, color2, iconType, special, extID FROM users WHERE extID = :requester";
+	$query = "SELECT userName, userID, icon, color1, color2, iconType, special, extID, clan FROM users WHERE extID = :requester";
 	$query = $db->prepare($query);
 	$query->execute([':requester' => $requester]);
 	$result2 = $query->fetchAll();
 	$user = $result2[0];
 	$uploadTime = $gs->makeDate($request["uploadDate"])." (".$gs->makeTime($request["uploadDate"])." ago)";
-	if(is_numeric($user["extID"])){
-		$extid = $user["extID"];
-	}else{
-		$extid = 0;
-	}
+	$extid = is_numeric($user['extID']) ? $user['extID'] : 0;
+	$user["userName"] = $gs->makeClanUsername($user);
 	$reqstring .= "1:".$user["userName"].":2:".$user["userID"].":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$extid.":32:".$request["ID"].":35:".$request["comment"].":41:".$request["isNew"].":37:".$uploadTime."|";
 
 }

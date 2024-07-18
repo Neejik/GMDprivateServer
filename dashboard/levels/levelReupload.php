@@ -9,22 +9,27 @@ $dl->title($dl->getLocalizedString("levelReupload"));
 $dl->printFooter('../');
 if($lrEnabled == 1) {
 function chkarray($source, $default = 0){
-	if($source == ""){
-		$target = $default;
-	}else{
-		$target = $source;
-	}
+	if($source == "") $target = $default;
+	else $target = $source;
 	return $target;
 }
-//error_reporting(0);
 include "../".$dbPath."incl/lib/connection.php";
+include "../".$dbPath."incl/lib/exploitPatch.php";
 require "../".$dbPath."incl/lib/XORCipher.php";
 require "../".$dbPath."config/reuploadAcc.php";
 require "../".$dbPath."config/proxy.php";
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
-if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
-if(!empty($_POST["levelid"])){
+if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0) {
+$checkBan = $gs->getPersonBan($_SESSION['accountID'], $gs->getUserID($_SESSION['accountID'], $gs->getAccountName($_SESSION['accountID'])), 2);
+if($checkBan) exit($dl->printSong('<div class="form">
+<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+	<form class="form__inner" method="post" action="">
+	<p>'.sprintf($dl->getLocalizedString("youAreBanned"), htmlspecialchars(base64_decode($checkBan['reason'])), date("d.m.Y G:i", $checkBan['expires'])).'</p>
+	<button type="button" onclick="a(\'\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("dashboard").'</button>
+	</form>
+</div>', 'reupload'));
+if(!empty($_POST["levelid"])) {
 	if(!Captcha::validateCaptcha()) {
 		$dl->printSong('<div class="form">
 			<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
@@ -40,6 +45,13 @@ if(!empty($_POST["levelid"])){
 	$levelID = $_POST["levelid"];
 	$levelID = preg_replace("/[^0-9]/", '', $levelID);
 	$url = $_POST["server"];
+	if(mb_substr($url, 0, 4) != 'http') exit($dl->printSong('<div class="form">
+		<h1>'.$dl->getLocalizedString("errorGeneric").'</h1>
+		<form class="form__inner" method="post" action="">
+		<p>'.$dl->getLocalizedString("invalidPost").'</p>
+		<button type="button" onclick="a(\'levels/levelReupload.php\', true, false, \'GET\')" class="btn-song">'.$dl->getLocalizedString("tryAgainBTN").'</button>
+		</form>
+	</div>', 'reupload'));
 	$post = ['gameVersion' => '22', 'binaryVersion' => '37', 'gdw' => '0', 'levelID' => $levelID, 'secret' => 'Wmfd2893gb7', 'inc' => '0', 'extras' => '0'];
 	$ch = curl_init($url);
 	// "StackOverflow is a lifesaver" - masckmaster 2023
@@ -111,11 +123,9 @@ if(!empty($_POST["levelid"])){
 		//old levelString
 		$levelString = chkarray($levelarray["a4"]);
 		$gameVersion = chkarray($levelarray["a13"]);
-		if(substr($levelString,0,2) == 'eJ'){
-			$levelString = str_replace("_","/",$levelString);
-			$levelString = str_replace("-","+",$levelString);
-			$levelString = gzuncompress(base64_decode($levelString));
-			if($gameVersion > 18){
+		if(substr($levelString,0,2) == 'eJ') {
+			$levelString = gzuncompress(ExploitPatch::url_base64_decode($levelString));
+			if($gameVersion > 18) {
 				$gameVersion = 18;
 			}
 		}
@@ -148,8 +158,7 @@ if(!empty($_POST["levelid"])){
 			$sfxIDs = isset($levelarray["a53"]) ? $levelarray["a53"] : '';
 			$ts = chkarray($levelarray["a57"]);
 			if($password != "0"){
-				$password = XORCipher::cipher(base64_decode($password),26364);
-			}
+				$password = XORCipher::cipher(ExploitPatch::url_base64_decode($password),26364);
 			$starCoins = 0;
 			$starDiff = 0;
 			$starDemon = 0;
@@ -157,13 +166,15 @@ if(!empty($_POST["levelid"])){
 			$starStars = 0;
 			$targetUserID = chkarray($levelarray["a6"]);
 			//linkacc
-			$userID = $gs->getUserID($_SESSION["accountID"]);
-			$extID = $_SESSION["accountID"];
+			if($automaticID) {
+				$reupUID = $gs->getUserID($_SESSION["accountID"]);
+				$reupAID = $_SESSION["accountID"];
+			}
 			//query
 			TimeoutCheck::CheckTimeout(-706);
 			$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, updateDate, originalReup, userID, extID, unlisted, hostname, starStars, starCoins, starDifficulty, starDemon, starAuto, isLDM, songIDs, sfxIDs, ts)
 												VALUES (:name ,:gameVersion, '27', 'Reupload', :desc, :version, :length, :audiotrack, '0', :password, :originalReup, :twoPlayer, :songID, '0', :coins, :reqstar, :extraString, :levelString, '', '', '$uploadDate', '$uploadDate', :originalReup, :userID, :extID, '0', :hostname, :starStars, :starCoins, :starDifficulty, :starDemon, :starAuto, :isLDM, :songIDs, :sfxIDs, :ts)");
-			$query->execute([':password' => $password, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => strip_tags($levelarray["a2"]), ':desc' => strip_tags($levelarray["a3"]), ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => "", ':originalReup' => $levelarray["a1"], ':hostname' => $hostname, ':starStars' => 0, ':starCoins' => 0, ':starDifficulty' => $starDiff, ':userID' => $userID, ':extID' => $extID, ':isLDM' => $isLDM, ':songIDs' => $songIDs, ':sfxIDs' => $sfxIDs, ':ts' => $ts]);
+			$query->execute([':password' => $password, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => strip_tags($levelarray["a2"]), ':desc' => strip_tags($levelarray["a3"]), ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => "", ':originalReup' => $levelarray["a1"], ':hostname' => $hostname, ':starStars' => 0, ':starCoins' => 0, ':starDifficulty' => $starDiff, ':userID' => $reupUID, ':extID' => $reupAID, ':isLDM' => $isLDM, ':songIDs' => $songIDs, ':sfxIDs' => $sfxIDs, ':ts' => $ts]);
 			$levelID = $db->lastInsertId();
 			file_put_contents("../".$dbPath."data/levels/$levelID", $levelString);
 		if($debug == 1) {
@@ -206,7 +217,7 @@ if(!empty($_POST["levelid"])){
 		<details class="details">
 			<summary style="width: 100%;">'.$dl->getLocalizedString("advanced").'</summary>
 			<div class="field" style="display: inline-flex;width:100%;justify-content: space-between;">
-            	<input type="text" name="server" id="p2" value="http://www.boomlings.com/database/downloadGJLevel22.php" placeholder="'.$dl->getLocalizedString("server").'" style="width: 100%;">
+            	<input type="text" name="server" id="p2" value="https://www.boomlings.com/database/downloadGJLevel22.php" placeholder="'.$dl->getLocalizedString("server").'" style="width: 100%;">
 			</div>
 		</details>'.Captcha::displayCaptcha(true).'
         <button type="button" onclick="a(\'levels/levelReupload.php\', true, true, \'POST\')" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button>

@@ -1,5 +1,4 @@
 <?php
-error_reporting(0);
 chdir(dirname(__FILE__));
 ob_flush();
 flush();
@@ -24,7 +23,7 @@ include "../../incl/lib/connection.php";
 $query = $db->prepare("UPDATE users
 	LEFT JOIN
 	(
-	    SELECT usersTable.userID, (IFNULL(starredTable.starred, 0) + IFNULL(featuredTable.featured, 0) + (IFNULL(epicTable.epic,0)*2)) as CP FROM (
+	    SELECT usersTable.userID, (IFNULL(starredTable.starred, 0) + IFNULL(featuredTable.featured, 0) + (IFNULL(epicTable.epic,0))) as CP FROM (
             SELECT userID FROM users
         ) AS usersTable
         LEFT JOIN
@@ -37,7 +36,7 @@ $query = $db->prepare("UPDATE users
 	    ) AS featuredTable ON usersTable.userID = featuredTable.userID
 	    LEFT JOIN
 	    (
-	        SELECT count(*)+(starEpic-1) as epic, userID FROM levels WHERE starEpic != 0 AND isCPShared = 0 GROUP BY(userID) 
+	        SELECT SUM(starEpic) as epic, userID FROM levels WHERE starEpic != 0 AND isCPShared = 0 GROUP BY(userID)
 	    ) AS epicTable ON usersTable.userID = epicTable.userID
 	) calculated
 	ON users.userID = calculated.userID

@@ -1,5 +1,4 @@
 <?php
-error_reporting(0);
 $date = date("d-m");
 if($date == "01-04"){
 	exit();

@@ -1,6 +1,4 @@
 <?php
-ini_set('display_errors', 0);
-error_reporting(NULL);
 chdir(dirname(__FILE__));
 if(function_exists("set_time_limit")) set_time_limit(0);
 include "fixcps.php";
@@ -22,6 +20,9 @@ include "fixnames.php";
 ob_flush();
 flush();
 include "demonlistPoints.php";
+ob_flush();
+flush();
+include "misc.php";
 ob_flush();
 flush();
 echo "1";
