@@ -33,7 +33,7 @@ class dashboardLib {
 						  <link href="incl/fontawesome/css/regular.css" rel="stylesheet">
                           <link async rel="stylesheet" href="incl/cvolton.css?'.$css.'">
 						  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-                          <title>'.$gdps.' Dashboard</title>';
+                          <title>'.$gdps.'</title>';
 		echo '</head>
 				<body><div style="height: 100%;display: contents;">';
 	}
@@ -84,8 +84,8 @@ class dashboardLib {
       	global $youtube;
       	global $twitch;
 		echo '<div class="footer">'.$this->getLocalizedString("footer").'<div>';
-        if($youtube != '') echo '<a href="'.$youtube.'" target="_blank"><img class="socials" style="width: 35px" src="'.$sub.'incl/socials/youtube.png"></a>';
-        if($discord != '') echo '<a href="'.$discord.'"target="_blank"><img class="socials" style="width: 35px" src="'.$sub.'incl/socials/discord.png"></a>';
+        if($youtube != '') echo '<a href="'.$youtube.'" target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/youtube.png"></a>';
+        if($discord != '') echo '<a href="'.$discord.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/discord.png"></a>';
       	if($twitter != '') echo '<a href="'.$twitter.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/twitter.png"></a>';
       	if($vk != '') echo '<a href="'.$vk.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/vk.png"></a>';
       	if($twitch != '') echo '<a href="'.$twitch.'"target="_blank"><img class="socials" style="width: 20px" src="'.$sub.'incl/socials/twitch.png"></a>';
@@ -155,7 +155,7 @@ class dashboardLib {
 				break;
 		}
 		echo '<nav id="navbarepta" class="navbar navbar-expand-lg navbar-dark menubar">
-			<button href="." onclick="a(\'\')" class="navbar-brand" style="margin-right:0.5rem;background:none;border:none"><img style="width:30px" src="icon.gif"></button>
+			<button href="." onclick="a(\'\')" class="navbar-brand" style="margin-right:0.5rem;background:none;border:none"><img style="width:30px" src="icon.png"></button>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -300,16 +300,16 @@ class dashboardLib {
 							<i class="fa-solid fa-language" aria-hidden="true"></i> '.$this->getLocalizedString("language").'
 						</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=EN"><div class="icon flag"><img class="imgflag" src="incl/flags/us.png?2"></div>English</a>
-							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=ES" title="Translated by Nejik"><div class="icon flag"><img class="imgflag" src="incl/flags/es.png?2"></div>Español</a>
-							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=FR" title="Translated by masckmaster2007"><div class="icon flag"><img class="imgflag" src="incl/flags/fr.png?2"></div>Français</a>
 							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=RU"><div class="icon flag"><img class="imgflag" src="incl/flags/ru.png?2"></div>Русский</a>
-							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=PT" title="Translated by OmgRod"><div class="icon flag"><img class="imgflag" src="incl/flags/pt.png?2"></div>Português</a>
+							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=EN"><div class="icon flag"><img class="imgflag" src="incl/flags/us.png?2"></div>English</a>
 							<a class="dropdown-item dontblock" href="lang/switchLang.php?lang=TR" title="Translated by EMREOYUN"><div class="icon flag"><img class="imgflag" src="incl/flags/tr.png?2"></div>Türkçe</a>
                             <a class="dropdown-item dontblock" href="lang/switchLang.php?lang=UA" title="Translated by Jamichi"><div class="icon flag"><img class="imgflag" src="incl/flags/ua.png?2"></div>Українська</a>
+                            <a class="dropdown-item dontblock" href="lang/switchLang.php?lang=FR" title="Translated by masckmaster2007 and M336"><div class="icon flag"><img class="imgflag" src="incl/flags/fr.png?2"></div>Français</a>
+                            <a class="dropdown-item dontblock" href="lang/switchLang.php?lang=ES" title="Translated by Nejik"><div class="icon flag"><img class="imgflag" src="incl/flags/es.png?2"></div>Español</a>
 						</div>';
 						$glob = function_exists('glob') ? (!empty(glob("../download/".$gdps.".*")) OR !empty(glob("download/".$gdps.".*"))) : true;
 						if($glob OR !empty($pc) OR !empty($mac) OR !empty($android) OR !empty($ios)) {
+							echo '
 					<li class="nav-item dropdown"  id="thirdp">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa-solid fa-download" aria-hidden="true"></i> '.$this->getLocalizedString("download").'
@@ -358,7 +358,8 @@ class dashboardLib {
 			$userName = $gs->getAccountName($_SESSION["accountID"]);
 			echo'<li class="nav-item dropdown '.$profileActive.'">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<i class="fa-solid fa-user-circle" aria-hidden="true"></i> '.$userName.'						</a>
+							<i class="fa-solid fa-user-circle" aria-hidden="true"></i> '.$userName.'
+						</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
 							<a type="button" href="profile/'.$userName.'" onclick="a(\'profile/'.$userName.'\')" class="dropdown-item"><div class="icon"><i class="fa-regular fa-id-badge"></i></div>'.$this->getLocalizedString("profile").'</a>';
 							$claaan = $gs->isPlayerInClan($_SESSION["accountID"]);
@@ -713,7 +714,7 @@ class dashboardLib {
 			</script>
 		</div>
 <script>
-	if(document.querySelector("[alt=\'www.000webhost.com\']") != null) document.querySelector("[alt=\'www.000webhost.com\']").parentElement.parentElement.remove();
+	if(document.querySelector("[alt=\'www.000webhost.com\']") != null) document.querySelector("[alt=\'www.000webhost.com\']").parentElement.parentElement.style = "z-index: 0;position: fixed;bottom: 0px;"
 	cptch = document.querySelector("#verycoolcaptcha");
 	$(document).click(function(event) {
 		if(event.target && !event.target.classList.contains("dontblock") && (event.target.classList.contains("dropdown-item") || event.target.classList.contains("icon") || event.target.classList.contains("nav-link") || event.target.classList.contains("fa-solid") || event.target.classList.contains("fa-regular"))) event.preventDefault();
@@ -944,10 +945,10 @@ class dashboardLib {
 	public function convertToDate($timestamp, $acc = false){
 		if($acc) {
 			if($timestamp == 0) return $this->getLocalizedString("never");
-			if(date("d.m.Y", $timestamp) == date("d.m.Y", time())) return "Today at ".date("G:i", $timestamp);
-			elseif(date("Y", $timestamp) == date("Y", time())) return date("d/m", $timestamp);
-			else return date("d/m/Y", $timestamp);
-		} else return date("d/m/Y G:i:s", $timestamp);
+			if(date("d.m.Y", $timestamp) == date("d.m.Y", time())) return date("G:i", $timestamp);
+			elseif(date("Y", $timestamp) == date("Y", time())) return date("d.m", $timestamp);
+			else return date("d.m.Y", $timestamp);
+		} else return date("d.m.Y G:i:s", $timestamp);
 	}
 	public function createProfileStats($stars = 0, $moons = 0, $diamonds = 0, $goldCoins = 0, $userCoins = 0, $demons = 0, $creatorPoints = 0, $isCreatorBanned = 0, $returnText = true) {
 		if($stars == 0) $st = ''; else $st = '<p class="profilepic">'.$stars.' <i class="fa-solid fa-star" style="color:#ffff88"></i></p>';
@@ -1042,7 +1043,7 @@ class dashboardLib {
 	}
 	public function title($title) {
       	global $gdps;
-		echo '<title>UGDPS Dashboard | '.$title.'</title>';
+		echo '<title>'.$title.' | '.$gdps.'</title>';
 	}
 }
 ?>
